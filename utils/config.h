@@ -11,37 +11,22 @@ public:
 			ECircle,
 			ECross
 		};
-		enum class EBox : int {
-			ENone,
-			E2DBoxes,
-			E3DBoxes,
-			EDebugBoxes
-		};
-		enum class EBar : int {
-			ENone,
-			ELeft,
-			ERight,
-			EBottom,
-			ETop,
-			ETriangle
-		};
 		struct
 		{
-			bool enable = false;
-			bool fovEnable = false;
-			float fov = 90.f;
+			bool enable = true;
+			bool fovEnable = true;
+			float fov = 130.f;
 			float spyglassFovMul = 1.0;
 			float sniperFovMul = 1.0;
-			bool spyRClickMode = false;
-			bool oxygen = false;
-			bool crosshair = false;
-			float crosshairSize = 3.f;
-			float crosshairThickness = 2.f;
+			bool spyRClickMode = true;
+			bool oxygen = true;
+			bool crosshair = true;
+			float crosshairSize = 4.f;
+			float crosshairThickness = 1.f;
 			ImVec4 crosshairColor = { 1.f, 1.f, 1.f, 1.f };
 			ECrosshairs crosshairType = ECrosshairs::ECircle;
 			bool bCustomTOD = false;
-			float customTOD = 1.f;
-			bool bCompass = false;
+			float customTOD = 0.f;
 		}client;
 		struct
 		{
@@ -55,10 +40,6 @@ public:
 				bool team = false;
 				bool tracers = false;
 				float tracersThickness = 1.f;
-				EBox boxType = EBox::ENone;
-				EBar barType = EBar::ENone;
-				bool bName = false;
-				bool bSkeleton = false;
 
 			}players;
 			struct
@@ -66,11 +47,6 @@ public:
 				bool enable = false;
 				float renderDistance = 100.f;
 				ImVec4 color = { 1.f, 1.f, 1.f, 1.f };
-				bool bSkeleton = false;
-				ImVec4 colorVis = { 1.f, 1.f, 1.f, 1.f };
-				ImVec4 colorInv = { 1.f, 1.f, 1.f, 1.f };
-				EBox boxType = EBox::ENone;
-				EBar barType = EBar::ENone;
 			}skeletons;
 			struct
 			{
@@ -96,10 +72,17 @@ public:
 				bool marks = false;
 				float marksRenderDistance = 100.f;
 				ImVec4 marksColor = { 1.f, 1.f, 1.f, 1.f };
+				bool decals = false;
+				bool rareNames = false;
+				char rareNamesFilter[0x64] = { 0 };
+				bool renderCenterName = false;
+				float decalsRenderDistance = 100.f;
+				ImVec4 decalsColor = { 1.f, 1.f, 1.f, 1.f };
 				bool vaults = false;
 				float vaultsRenderDistance = 100.f;
 				ImVec4 vaultsColor = { 1.f, 1.f, 1.f, 1.f };
 				bool barrels = false;
+				float barrelsRenderDistance = 100.f;
 				ImVec4 barrelsColor = { 1.f, 1.f, 1.f, 1.f };
 				bool barrelspeek = false;
 				bool barrelstoggle = false;
@@ -117,16 +100,12 @@ public:
 				bool animals = false;
 				float animalsRenderDistance = 100.f;
 				ImVec4 animalsColor = { 1.f, 1.f, 1.f, 1.f };
-				bool bName = false;
-				EBox boxType = EBox::ENone;
-				bool sharks = false;
-				float sharksRenderDistance = 100.f;
-				ImVec4 sharksColor = { 1.f, 1.f, 1.f, 1.f };
-				bool bSkeleton = false;
 				bool lostCargo = false;
 				ImVec4 cluesColor = { 1.f, 1.f, 1.f, 1.f };
+				bool gsRewards = false;
+				ImVec4 gsRewardsColor = { 1.f, 1.f, 1.f, 1.f };
 			}items;
-			struct
+			struct 
 			{
 				bool enable = false;
 				bool mermaids = false;
@@ -138,6 +117,9 @@ public:
 				bool rowboats = false;
 				float rowboatsRenderDistance = 100.f;
 				ImVec4 rowboatsColor = { 1.f, 1.f, 1.f, 1.f };
+				bool sharks = false;
+				float sharksRenderDistance = 100.f;
+				ImVec4 sharksColor = { 1.f, 1.f, 1.f, 1.f };
 				bool events = false;
 				float eventsRenderDistance = 100.f;
 				ImVec4 eventsColor = { 1.f, 1.f, 1.f, 1.f };
@@ -159,7 +141,6 @@ public:
 				bool trigger = false;
 				bool visibleOnly = false;
 				bool calcShipVel = true;
-				bool fastweapon = false;
 			}weapon;
 			struct
 			{
@@ -179,13 +160,6 @@ public:
 				bool drawPred = false;
 				bool improvedVersion = false;
 			}cannon;
-			struct {
-				bool enable = false;
-				bool visibleOnly = false;
-				bool bAutoshoot = false;
-				float fYaw = 100.f;
-				float fPitch = 102.f;
-			} harpoon;
 			struct
 			{
 				bool rage = false;
@@ -201,8 +175,6 @@ public:
 			bool playerList = false;
 			bool cooking = false;
 			bool noIdleKick = false;
-			bool shipInfo = false;
-			bool b_bunnyhop = false;
 		}game;
 		struct
 		{

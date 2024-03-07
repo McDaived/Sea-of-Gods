@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source code">
+      <UniqueIdentifier>{fd52a6a2-0da0-4e72-8b7e-1914efc90741}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\library">
+      <UniqueIdentifier>{7d095278-ea05-40d4-8105-04a2ec23c1fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\main">
+      <UniqueIdentifier>{db2e85df-72fc-4498-bff3-59d8b6b9ff3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\utils">
+      <UniqueIdentifier>{7030bf0b-03da-457c-a326-28bafa83e672}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\sdk">
+      <UniqueIdentifier>{efea6424-6f16-4b56-848a-40647057a80d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\library\imgui">
+      <UniqueIdentifier>{66debd0d-d29a-4fa5-98c9-839b340ef302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\library\tslib">
+      <UniqueIdentifier>{9895dd5a-32eb-40a2-bbad-f3338bb29559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\library\ue4">
+      <UniqueIdentifier>{bd969cd5-27b5-43e9-bc83-52e63fc6c51a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\library\kiero">
+      <UniqueIdentifier>{e6f05420-32bc-42c7-bd48-0a3622bd2e52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\library\kiero\minhook">
+      <UniqueIdentifier>{67653f1a-e294-4187-80bc-ee47480f70cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\library\kiero\minhook\dll_resources">
+      <UniqueIdentifier>{ba8cb67b-f936-41c0-a567-ee0597edf480}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\library\kiero\minhook\include">
+      <UniqueIdentifier>{8724193c-ad09-4245-b6d9-05abd6855d4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\library\kiero\minhook\src">
+      <UniqueIdentifier>{5882193b-03cf-4dc9-9f25-72eb2c5d4933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source code\library\kiero\minhook\src\hde">
+      <UniqueIdentifier>{cf3ef6b3-7618-4c92-8e91-6770c4351551}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="library\imgui\imconfig.h">
+      <Filter>Source code\library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imgui.h">
+      <Filter>Source code\library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imgui_impl_dx11.h">
+      <Filter>Source code\library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imgui_impl_win32.h">
+      <Filter>Source code\library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imgui_internal.h">
+      <Filter>Source code\library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imstb_rectpack.h">
+      <Filter>Source code\library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imstb_textedit.h">
+      <Filter>Source code\library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imstb_truetype.h">
+      <Filter>Source code\library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\kiero\kiero.h">
+      <Filter>Source code\library\kiero</Filter>
+    </ClInclude>
+    <ClInclude Include="library\kiero\minhook\include\MinHook.h">
+      <Filter>Source code\library\kiero\minhook\include</Filter>
+    </ClInclude>
+    <ClInclude Include="library\kiero\minhook\src\buffer.h">
+      <Filter>Source code\library\kiero\minhook\src</Filter>
+    </ClInclude>
+    <ClInclude Include="library\kiero\minhook\src\trampoline.h">
+      <Filter>Source code\library\kiero\minhook\src</Filter>
+    </ClInclude>
+    <ClInclude Include="library\kiero\minhook\src\hde\hde32.h">
+      <Filter>Source code\library\kiero\minhook\src\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="library\kiero\minhook\src\hde\hde64.h">
+      <Filter>Source code\library\kiero\minhook\src\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="library\kiero\minhook\src\hde\pstdint.h">
+      <Filter>Source code\library\kiero\minhook\src\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="library\kiero\minhook\src\hde\table32.h">
+      <Filter>Source code\library\kiero\minhook\src\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="library\kiero\minhook\src\hde\table64.h">
+      <Filter>Source code\library\kiero\minhook\src\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ue4\Vector.h">
+      <Filter>Source code\library\ue4</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ue4\Transform.h">
+      <Filter>Source code\library\ue4</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ue4\UE4.h">
+      <Filter>Source code\library\ue4</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ue4\Array.h">
+      <Filter>Source code\library\ue4</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ue4\Color.h">
+      <Filter>Source code\library\ue4</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ue4\Math.h">
+      <Filter>Source code\library\ue4</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ue4\Matrix.h">
+      <Filter>Source code\library\ue4</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ue4\Quat.h">
+      <Filter>Source code\library\ue4</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ue4\Rotator.h">
+      <Filter>Source code\library\ue4</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ue4\Vector2D.h">
+      <Filter>Source code\library\ue4</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ue4\Vector4.h">
+      <Filter>Source code\library\ue4</Filter>
+    </ClInclude>
+    <ClInclude Include="library\tslib\tslib.h">
+      <Filter>Source code\library\tslib</Filter>
+    </ClInclude>
+    <ClInclude Include="main\main.hpp">
+      <Filter>Source code\main</Filter>
+    </ClInclude>
+    <ClInclude Include="main\Encryption.hpp">
+      <Filter>Source code\main</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\SDK.h">
+      <Filter>Source code\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\engine.h">
+      <Filter>Source code\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\config.h">
+      <Filter>Source code\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\cIcons.h">
+      <Filter>Source code\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\logger.h">
+      <Filter>Source code\utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="library\imgui\imgui.cpp">
+      <Filter>Source code\library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_draw.cpp">
+      <Filter>Source code\library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_impl_dx11.cpp">
+      <Filter>Source code\library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_impl_win32.cpp">
+      <Filter>Source code\library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_tables.cpp">
+      <Filter>Source code\library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_widgets.cpp">
+      <Filter>Source code\library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="library\kiero\kiero.cpp">
+      <Filter>Source code\library\kiero</Filter>
+    </ClCompile>
+    <ClCompile Include="library\kiero\minhook\src\buffer.c">
+      <Filter>Source code\library\kiero\minhook\src</Filter>
+    </ClCompile>
+    <ClCompile Include="library\kiero\minhook\src\hook.c">
+      <Filter>Source code\library\kiero\minhook\src</Filter>
+    </ClCompile>
+    <ClCompile Include="library\kiero\minhook\src\trampoline.c">
+      <Filter>Source code\library\kiero\minhook\src</Filter>
+    </ClCompile>
+    <ClCompile Include="library\kiero\minhook\src\hde\hde32.c">
+      <Filter>Source code\library\kiero\minhook\src\hde</Filter>
+    </ClCompile>
+    <ClCompile Include="library\kiero\minhook\src\hde\hde64.c">
+      <Filter>Source code\library\kiero\minhook\src\hde</Filter>
+    </ClCompile>
+    <ClCompile Include="library\ue4\Transform.cpp">
+      <Filter>Source code\library\ue4</Filter>
+    </ClCompile>
+    <ClCompile Include="library\ue4\UE4.cpp">
+      <Filter>Source code\library\ue4</Filter>
+    </ClCompile>
+    <ClCompile Include="library\tslib\tslib.cpp">
+      <Filter>Source code\library\tslib</Filter>
+    </ClCompile>
+    <ClCompile Include="main\main.cpp">
+      <Filter>Source code\main</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\SDK.cpp">
+      <Filter>Source code\sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\engine.cpp">
+      <Filter>Source code\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\logger.cpp">
+      <Filter>Source code\utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="library\kiero\minhook\dll_resources\MinHook.def">
+      <Filter>Source code\library\kiero\minhook\dll_resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="library\kiero\minhook\dll_resources\MinHook.rc">
+      <Filter>Source code\library\kiero\minhook\dll_resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

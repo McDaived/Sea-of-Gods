@@ -1,19 +1,18 @@
 #pragma once
-
 #include <vector>
 #include <Windows.h>
+#include <intrin.h>
+#include <d3d11.h>
 #include "../sdk/SDK.h"
 #include "logger.h"
 #include "config.h"
 #include "cIcons.h"
-#include <intrin.h>
-#include <d3d11.h>
-#pragma comment(lib, "d3d11.lib")
 #include "../library/ImGui/imgui_impl_win32.h"
 #include "../library/ImGui/imgui_impl_dx11.h"
 #include "../library/ImGui/imgui_internal.h"
 #include "../library/ImGui/imgui.h"
-#include "../library/minhook/include/MinHook.h"
+
+#include "../library/kiero/minhook/include/MinHook.h"
 
 void processhk(void* Object, UFunction* Function, void* Params);
 typedef void(__stdcall* fnProcessEvent)(void* Object, UFunction* Function, void* Params);
@@ -48,8 +47,6 @@ void RenderText(ImDrawList* drawList, const char* text, const FVector2D& pos, co
 void RenderText(ImDrawList* drawList, const char* text, const ImVec2& screen, const ImVec4& color, const float size, const bool outlined = false, const bool centered = true);
 void renderPin(ImDrawList* drawList, const ImVec2& pos, const ImVec4& color, const float radius);
 void Render2DBox(ImDrawList* drawList, const FVector2D& top, const FVector2D& bottom, const float height, const float width, const ImVec4& color);
-bool Render3DBox(AController* const controller, const FVector& origin, const FVector& extent, const FRotator& rotation, const ImVec4& color);
-bool RenderSkeleton(ImDrawList* drawList, AController* const controller, USkeletalMeshComponent* const mesh, const FMatrix& comp2world, const std::pair<const BYTE*, const BYTE>* skeleton, int size, const ImVec4& color);
 float fClamp(float v, const float min, const float max);
 bool checkSDKObjects();
 bool WorldToScreen(Vector3 origin, Vector2* out, const FVector& cameraLocation, const FRotator& cameraRotation, const float fov);

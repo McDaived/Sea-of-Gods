@@ -3,7 +3,6 @@
 #include "../library/ue4/UE4.h"
 #include <string>
 
-
 struct UFunction;
 class UClass;
 
@@ -172,8 +171,6 @@ struct TUObjectArray
 	class UObject* GetByIndex(int index) { return Objects[index].Object; }
 };
 
-// Class CoreUObject.Object
-// Size: 0x28 (Inherited: 0x00)
 struct UObject {
 	UObject(UObject* addr) { *this = addr; }
 	static inline TUObjectArray* GObjects = nullptr;
@@ -219,7 +216,6 @@ struct FVector_NetQuantize : public FVector
 {
 
 };
-
 // ScriptStruct Engine.HitResult
 // Size: 0x80 (Inherited: 0x00)
 struct FHitResult
@@ -238,6 +234,7 @@ struct FHitResult
 	int                                                FaceIndex;                                                // 0x007C(0x0004) (ZeroConstructor, IsPlainOldData)
 };
 
+// Enum Athena.EPlayerActivityType
 enum class EPlayerActivityType : uint8_t
 {
 	None = 0,
@@ -266,7 +263,7 @@ enum class EPlayerActivityType : uint8_t
 
 
 // Class Engine.PlayerState
-// Size: 0x448 (Inherited: 0x3c8)
+// Size: 0x450 (Inherited: 0x3c8)
 struct APlayerState {
 	char pad_00[0x3c8];
 	float Score; // 0x3c8(0x04)
@@ -283,25 +280,27 @@ struct APlayerState {
 	char bFromPreviousLevel : 1; // 0x3f4(0x01)
 	char UnknownData_3F4_6 : 2; // 0x3f4(0x01)
 	char UnknownData_3F5[0x3]; // 0x3f5(0x03)
-	struct UClass* EngineMessageClass; // 0x3f8(0x08)
-	char UnknownData_400[0x18]; // 0x400(0x18)
+	int32_t StartTime; // 0x3f8(0x04)
+	char UnknownData_3FC[0x4]; // 0x3fc(0x04)
+	struct UClass* EngineMessageClass; // 0x400(0x08)
+	char UnknownData_408[0x18]; // 0x408(0x18)
 	char UniqueId[0x18]; // 0x420(0x18)
-	char UnknownData_430[0x18]; // 0x430(0x18)
+	char UnknownData_438[0x18]; // 0x438(0x18)
 
 	void OnRep_UniqueId(); // Function Engine.PlayerState.OnRep_UniqueId // Native|Public // @ game+0x2ceae70
 };
 
 // Class Athena.DamageZone
-// Size: 0x878 (Inherited: 0x400)
+// Size: 0x820 (Inherited: 0x400)
 struct ADamageZone {
-	char pad[0x0654];
+	char pad[0x654];
 	int32_t DamageLevel; // 0x654(0x04)
 };
 
 // Class Athena.HullDamage
-// Size: 0x628 (Inherited: 0x3c8)
+// Size: 0x5d0 (Inherited: 0x3c8)
 struct AHullDamage {
-	char pad[0x0410];
+	char pad[0x410];
 	struct TArray<struct ADamageZone*> DamageZones; // 0x410(0x10)
 	TArray<class ACharacter*> ActiveHullDamageZones; // 0x0420
 };
@@ -327,7 +326,7 @@ struct AShipInternalWater {
 // Class AthenaAI.Fauna
 // Size: 0xbe0 (Inherited: 0x810)
 struct AFauna {
-	char pad1[0x0818];
+	char pad1[0x818];
 	FText DisplayName; // 0x0818
 };
 
@@ -347,117 +346,8 @@ struct FRepMovement {
 	char UnknownData_34[0x4]; // 0x34(0x04)
 };
 
-
-
-struct USkeletalMeshComponent {
-	char pad[0x5D8];
-	TArray<FTransform> SpaceBasesArray[2];  // 0x5D8(0x10)  USkinnedMeshComponent MasterPoseComponent.
-	int CurrentEditableSpaceBases;
-	int CurrentReadSpaceBases;
-
-
-	FVector GetSocketLocation(struct FName InSocketName) {
-		static auto fn = UObject::FindObject<UFunction>("Function Engine.SceneComponent.GetSocketLocation");
-		struct
-		{
-			FName InSocketName;
-			FVector ReturnValue;
-		}params;
-		params.InSocketName = InSocketName;
-		ProcessEvent(this, fn, &params);
-		return params.ReturnValue;
-	}
-
-	FName GetBoneName(int BoneIndex)
-	{
-		static auto fn = UObject::FindObject<UFunction>("Function Engine.SkinnedMeshComponent.GetBoneName");
-		struct
-		{
-			int BoneIndex = 0;
-			FName ReturnValue;
-		} params;
-		params.BoneIndex = BoneIndex;
-		ProcessEvent(this, fn, &params);
-		return params.ReturnValue;
-	}
-
-	FTransform K2_GetComponentToWorld() {
-		static auto fn = UObject::FindObject<UFunction>("Function Engine.SceneComponent.K2_GetComponentToWorld");
-		FTransform CompToWorld;
-		ProcessEvent(this, fn, &CompToWorld);
-		return CompToWorld;
-	}
-
-	bool GetBone(const uint32_t id, const FMatrix& componentToWorld, FVector& pos) {
-		try {
-			auto bones = SpaceBasesArray[CurrentReadSpaceBases];
-
-			if (id >= bones.Count) return false;
-			const auto& bone = bones[id];
-			auto boneMatrix = bone.ToMatrixWithScale();
-			auto world = boneMatrix * componentToWorld;
-			pos = { world.M[3][0], world.M[3][1], world.M[3][2] };
-			return true;
-		}
-		catch (...)
-		{
-			printf("error %d\n", __LINE__);
-			return false;
-		}
-	}
-};
-
-struct UHealthComponent {
-	char pad[0xd8];
-	float MinTimeSinceLastPredictedHealthChangeToFireChangedEventAgain; // 0xd8(0x04) (Edit, ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash)
-	char pad1[0x4];
-	float MaxHealth; // 0xe0(0x04)                                               (Edit, Net, ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash)
-	float GetMaxHealth() {
-		static auto fn = UObject::FindObject<UFunction>("Function Athena.HealthComponent.GetMaxHealth");
-		float health = 0.f;
-		ProcessEvent(this, fn, &health);
-		return health;
-	}
-	float GetCurrentHealth() {
-		static auto fn = UObject::FindObject<UFunction>("Function Athena.HealthComponent.GetCurrentHealth");
-		float health = 0.f;
-		ProcessEvent(this, fn, &health);
-		return health;
-	};
-};
-
-struct AHealthComponent
-{
-	char pad[0x8a8];
-	UHealthComponent* HealthComponent; // 0x8a8(0x08) // Class Athena.AthenaCharacter
-};
-
-struct AUSkeletalMeshComponent
-{
-	char pad[0x440];
-	USkeletalMeshComponent* Mesh; // 0x440(0x08) // Class Engine.Character
-};
-
-enum class ESwimmingCreatureType : uint8_t
-{
-	SwimmingCreature = 0,
-	Shark = 1,
-	TinyShark = 2,
-	Siren = 3,
-	ESwimmingCreatureType_MAX = 4
-};
-
-
-struct ASharkPawn {
-	char pad1[0x04C0];
-	USkeletalMeshComponent* Mesh; // 0x4c0(0x08) USkeletalMeshMemoryConstraintComponent* Mesh;
-	char pad2[0x5C];
-	ESwimmingCreatureType SwimmingCreatureType; // 0x524(0x01)
-};
-
 // Class Engine.Actor
-//// Size: 0x3c8 (Inherited: 0x28)
-
+// Size: 0x3c8 (Inherited: 0x28)
 struct AActor : UObject {
 	char PrimaryActorTick[0x50]; // 0x28(0x50)
 	float CustomTimeDilation; // 0x78(0x04)
@@ -483,9 +373,8 @@ struct AActor : UObject {
 	char bReplicateAttachment : 1; // 0x7e(0x01)
 	char UnknownData_7E_5 : 1; // 0x7e(0x01)
 	char bReplicates : 1; // 0x7e(0x01)
-	char bActorVisible : 1; // 0x7e(0x01)
 	char UnknownData_7F[0x1]; // 0x7f(0x01)
-	char OnPreNetOwnershipChange[0x01]; // 0x80(0x01)
+	char OnPreNetOwnershipChange; // 0x80(0x01)
 	char UnknownData_81[0x2]; // 0x81(0x02)
 	char RemoteRole; // 0x83(0x01)
 	char UnknownData_84[0x4]; // 0x84(0x04)
@@ -526,7 +415,7 @@ struct AActor : UObject {
 	char UnknownData_188_1 : 7; // 0x188(0x01)
 	char UnknownData_189[0x7]; // 0x189(0x07)
 	struct TArray<struct FName> Layers; // 0x190(0x10)
-	char ParentComponentActor[0x08]; // 0x1a0(0x08)
+	char ParentComponentActor[0x8]; // 0x1a0(0x08)
 	struct TArray<struct AActor*> ChildComponentActors; // 0x1a8(0x10)
 	char UnknownData_1B8[0x8]; // 0x1b8(0x08)
 	char bActorSeamlessTraveled : 1; // 0x1c0(0x01)
@@ -539,12 +428,12 @@ struct AActor : UObject {
 	char UnknownData_1CC[0x4]; // 0x1cc(0x04)
 	struct TArray<struct FName> Tags; // 0x1d0(0x10)
 	uint64_t HiddenEditorViews; // 0x1e0(0x08)
-	char OnActorBeginOverlap[0x01]; // 0x1e8(0x01)
-	char OnActorEndOverlap[0x01]; // 0x1e9(0x01)
-	char OnActorHit[0x01]; // 0x1ea(0x01)
-	char OnDestroyed[0x01]; // 0x1eb(0x01)
+	char OnActorBeginOverlap; // 0x1e8(0x01)
+	char OnActorEndOverlap; // 0x1e9(0x01)
+	char OnActorHit; // 0x1ea(0x01)
+	char OnDestroyed; // 0x1eb(0x01)
 	char UnknownData_1EC[0x3c]; // 0x1ec(0x3c)
-	char OnEndPlay[0x01]; // 0x228(0x01)
+	char OnEndPlay; // 0x228(0x01)
 	bool bDoOverlapNotifiesOnLoad; // 0x229(0x01)
 	char UnknownData_22A[0xf6]; // 0x22a(0xf6)
 	struct TArray<struct UActorComponent*> BlueprintCreatedComponents; // 0x320(0x10)
@@ -565,18 +454,24 @@ struct AActor : UObject {
 
 // Class Engine.Pawn
 // Size: 0x440 (Inherited: 0x3c8)
+struct ANamedPawn {
+	char pad[0x3e8];
+	struct APlayerState* PlayerState; // 0x3e8(0x08)
+};
+
+// Class Engine.Pawn
+// Size: 0x440 (Inherited: 0x3c8)
 struct APawn : AActor {
 	char pad[0x20];
 	struct APlayerState* PlayerState; // 0x3e8(0x08)
 	char pad2[0x50];
 };
 
-
 // ScriptStruct Athena.WorldMapIslandDataCaptureParams
 // Size: 0x40 (Inherited: 0x00)
 struct FWorldMapIslandDataCaptureParams
 {
-	char pad1[0x0018];
+	char pad1[0x18];
 	struct FVector                                     WorldSpaceCameraPosition;                                  // 0x0018(0x000C) (Edit, ZeroConstructor, Transient, EditConst, IsPlainOldData, NoDestructor)
 	char pad2[0x8];
 	float                                              CameraOrthoWidth;                                          // 0x002C(0x0004) (Edit, ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash)
@@ -586,7 +481,7 @@ struct FWorldMapIslandDataCaptureParams
 // Class Athena.WorldMapIslandDataAsset
 // Size: 0x78 (Inherited: 0x28)
 struct UWorldMapIslandDataAsset {
-	char pad[0x0030];
+	char pad[0x30];
 	struct FWorldMapIslandDataCaptureParams            CaptureParams;                                             // 0x0030(0x0040) (Edit, BlueprintVisible, BlueprintReadOnly)
 	FVector WorldSpaceCameraPosition;
 	// ADD THE OFFSET OF CAPTUREPARAMS TO THIS OFFSET
@@ -620,19 +515,17 @@ struct UIslandDataAssetEntry {
 	char UnknownData_113[0x5]; // 0x113(0x05)
 };
 
-
 // Class Athena.IslandDataAsset
 // Size: 0x58 (Inherited: 0x28)
 struct UIslandDataAsset {
-	char pad[0x0048];
+	char pad[0x48];
 	struct TArray<struct UIslandDataAssetEntry*> IslandDataEntries; // 0x48(0x10)
 };
-
 
 // Class Athena.IslandService
 // Size: 0x5e8 (Inherited: 0x3c8)
 struct AIslandService {
-	char pad[0x0458];
+	char pad[0x458];
 	UIslandDataAsset* IslandDataAsset; // 0x458
 };
 
@@ -688,7 +581,6 @@ struct FCrewSessionTemplate : public FSessionTemplate
 
 // ScriptStruct Athena.Crew
 // Size: 0xa0 (Inherited: 0x00)
-
 struct FCrew {
 	struct FGuid CrewId; // 0x00(0x10)
 	struct FGuid SessionId; // 0x10(0x10)
@@ -702,15 +594,12 @@ struct FCrew {
 	bool CrewDivingToWorldEvent; // 0x92(0x01)
 	char UnknownData_93[0x1]; // 0x93(0x01)
 	int32_t ScrambleNameIndex; // 0x94(0x04)
-	char FGenericTeamId_TeamID[0x1]; // 0x98(0x01)
+	char pad_FGenericTeamId_TeamID[0x1]; // 0x98(0x01)
 	char UnknownData_99[0x7]; // 0x99(0x07)
 };
 
-
-// Class Athena.CrewService
-// Size: 0x6e0 (Inherited: 0x3c8)
 struct ACrewService {
-	char pad[0x04A0];
+	char pad[0x4A0];
 	struct TArray<struct FCrew> Crews; // 0x4a0(0x10)
 };
 
@@ -726,144 +615,141 @@ struct AShipService
 };
 
 // Class Athena.AthenaGameState
-// Size: 0xc98 (Inherited: 0x530)
+// Size: 0xca8 (Inherited: 0x540)
 struct AAthenaGameState {
-	char UnknownData_00[0x530]; // 0x0(0x530)
-	char UnknownData_530[0x78]; // 0x530(0x78)
-	struct AWindService* WindService; // 0x5a8(0x08)
-	struct APlayerManagerService* PlayerManagerService; // 0x5b0(0x08)
-	struct AShipService* ShipService; // 0x5b8(0x08)
-	struct AWatercraftService* WatercraftService; // 0x5c0(0x08)
-	struct ATimeService* TimeService; // 0x5c8(0x08)
-	struct UHealthCustomizationService* HealthService; // 0x5d0(0x08)
-	struct UCustomWeatherService* CustomWeatherService; // 0x5d8(0x08)
-	struct UCustomStatusesService* CustomStatusesService; // 0x5e0(0x08)
-	struct AFFTWaterService* WaterService; // 0x5e8(0x08)
-	struct AStormService* StormService; // 0x5f0(0x08)
-	struct ACrewService* CrewService; // 0x5f8(0x08)
-	struct ACaptainedSessionService* CaptainedSessionService; // 0x600(0x08)
-	struct AContestZoneService* ContestZoneService; // 0x608(0x08)
-	struct AIslandService* IslandService; // 0x610(0x08)
-	struct ANPCService* NPCService; // 0x618(0x08)
-	struct ASkellyFortService* SkellyFortService; // 0x620(0x08)
-	struct ADeepSeaRegionService* DeepSeaRegionService; // 0x628(0x08)
-	struct UAIActionSpotService* AIActionSpotService; // 0x630(0x08)
-	struct AAIDioramaService* AIDioramaService; // 0x638(0x08)
-	struct AAshenLordEncounterService* AshenLordEncounterService; // 0x640(0x08)
-	struct AAggressiveGhostShipsEncounterService* AggressiveGhostShipsEncounterService; // 0x648(0x08)
-	struct ATallTaleService* TallTaleService; // 0x650(0x08)
-	struct AAIShipObstacleService* AIShipObstacleService; // 0x658(0x08)
-	struct AAIShipService* AIShipService; // 0x660(0x08)
-	struct AAITargetService* AITargetService; // 0x668(0x08)
-	struct UShipLiveryCatalogueService* ShipLiveryCatalogueService; // 0x670(0x08)
-	struct ADrawDebugService* DrawDebugService; // 0x678(0x08)
-	struct AWorldEventZoneService* WorldEventZoneService; // 0x680(0x08)
-	struct UWorldResourceRegistry* WorldResourceRegistry; // 0x688(0x08)
-	struct AKrakenService* KrakenService; // 0x690(0x08)
-	struct UPlayerNameService* PlayerNameService; // 0x698(0x08)
-	struct ATinySharkService* TinySharkService; // 0x6a0(0x08)
-	struct AReapersTributeShipEventService* ReapersTributeShipEventService; // 0x6a8(0x08)
-	struct AProjectileService* ProjectileService; // 0x6b0(0x08)
-	struct AProjectileHitRegService* ProjectileHitRegService; // 0x6b8(0x08)
-	struct ULaunchableProjectileService* LaunchableProjectileService; // 0x6c0(0x08)
-	struct UServerNotificationsService* ServerNotificationsService; // 0x6c8(0x08)
-	struct AAIManagerService* AIManagerService; // 0x6d0(0x08)
-	struct AAIEncounterService* AIEncounterService; // 0x6d8(0x08)
-	struct AAIEncounterGenerationService* AIEncounterGenerationService; // 0x6e0(0x08)
-	struct UEncounterService* EncounterService; // 0x6e8(0x08)
-	struct UGameEventSchedulerService* GameEventSchedulerService; // 0x6f0(0x08)
-	struct UGameEventsOnDemandAvailabilityService* GameEventsOnDemandAvailabilityService; // 0x6f8(0x08)
-	struct AGameEventsOnDemandLoserTunnelService* GameEventsOnDemandLoserTunnelService; // 0x700(0x08)
-	struct UHideoutService* HideoutService; // 0x708(0x08)
-	struct UAthenaStreamedLevelService* StreamedLevelService; // 0x710(0x08)
-	struct ULocationProviderService* LocationProviderService; // 0x718(0x08)
-	struct AHoleService* HoleService; // 0x720(0x08)
-	struct APlayerBuriedItemService* PlayerBuriedItemService; // 0x728(0x08)
-	struct ULoadoutService* LoadoutService; // 0x730(0x08)
-	struct UOcclusionService* OcclusionService; // 0x738(0x08)
-	struct UPetsService* PetsService; // 0x740(0x08)
-	struct UAthenaAITeamsService* AthenaAITeamsService; // 0x748(0x08)
-	struct AAllianceService* AllianceService; // 0x750(0x08)
-	struct UMaterialAccessibilityService* MaterialAccessibilityService; // 0x758(0x08)
-	struct UNPCLoadedOnClientService* NPCLoadedOnClientService; // 0x760(0x08)
-	struct AReapersMarkService* ReapersMarkService; // 0x768(0x08)
-	struct AEmissaryLevelService* EmissaryLevelService; // 0x770(0x08)
-	struct AFactionService* FactionService; // 0x778(0x08)
-	struct ACampaignService* CampaignService; // 0x780(0x08)
-	struct AStoryService* StoryService; // 0x788(0x08)
-	struct AStorySpawnedActorsService* StorySpawnedActorsService; // 0x790(0x08)
-	struct AStoryClaimedResourcesService* StoryClaimedResourcesService; // 0x798(0x08)
-	struct UGlobalVoyageDirectorService* GlobalVoyageDirector; // 0x7a0(0x08)
-	struct UUtilityVoyageService* UtilityVoyageService; // 0x7a8(0x08)
-	struct AFlamesOfFateSettingsService* FlamesOfFateSettingsService; // 0x7b0(0x08)
-	struct AServiceStatusNotificationsService* ServiceStatusNotificationsService; // 0x7b8(0x08)
-	struct UMigrationService* MigrationService; // 0x7c0(0x08)
-	struct UShipStockService* ShipStockService; // 0x7c8(0x08)
-	struct AShroudBreakerService* ShroudBreakerService; // 0x7d0(0x08)
-	struct UServerUpdateReportingService* ServerUpdateReportingService; // 0x7d8(0x08)
-	struct AGenericMarkerService* GenericMarkerService; // 0x7e0(0x08)
-	struct AMechanismsService* MechanismsService; // 0x7e8(0x08)
-	struct UMerchantContractsService* MerchantContractsService; // 0x7f0(0x08)
-	struct UShipFactory* ShipFactory; // 0x7f8(0x08)
-	struct URewindPhysicsService* RewindPhysicsService; // 0x800(0x08)
-	struct UNotificationMessagesDataAsset* NotificationMessagesDataAsset; // 0x808(0x08)
-	struct AProjectileCooldownService* ProjectileCooldownService; // 0x810(0x08)
-	struct UIslandReservationService* IslandReservationService; // 0x818(0x08)
-	struct APortalService* PortalService; // 0x820(0x08)
-	struct UMeshMemoryConstraintService* MeshMemoryConstraintService; // 0x828(0x08)
-	struct ABootyStorageService* BootyStorageService; // 0x830(0x08)
-	struct ALoadoutCostService* LoadoutCostService; // 0x838(0x08)
-	struct ASpireService* SpireService; // 0x840(0x08)
-	struct AFireworkService* FireworkService; // 0x848(0x08)
-	struct AInvasionService* InvasionService; // 0x850(0x08)
-	struct UAirGivingService* AirGivingService; // 0x858(0x08)
-	struct UCutsceneService* CutsceneService; // 0x860(0x08)
-	struct ACargoRunService* CargoRunService; // 0x868(0x08)
-	struct ACommodityDemandService* CommodityDemandService; // 0x870(0x08)
-	struct ADebugTeleportationDestinationService* DebugTeleportationDestinationService; // 0x878(0x08)
-	struct ASeasonProgressionUIService* SeasonProgressionUIService; // 0x880(0x08)
-	struct UTransientActorService* TransientActorService; // 0x888(0x08)
-	struct ATunnelsOfTheDamnedService* TunnelsOfTheDamnedService; // 0x890(0x08)
-	struct UWorldSequenceService* WorldSequenceService; // 0x898(0x08)
-	struct UItemLifetimeManagerService* ItemLifetimeManagerService; // 0x8a0(0x08)
-	struct AShipStorageJettisonService* ShipStorageJettisonService; // 0x8a8(0x08)
-	struct ASeaFortsService* SeaFortsService; // 0x8b0(0x08)
-	struct ACustomServerLocalisationService* CustomServerLocalisationService; // 0x8b8(0x08)
-	struct ABeckonService* BeckonService; // 0x8c0(0x08)
-	struct UVolcanoService* VolcanoService; // 0x8c8(0x08)
-	struct UShipAnnouncementService* ShipAnnouncementService; // 0x8d0(0x08)
-	struct AShipsLogService* ShipsLogService; // 0x8d8(0x08)
-	struct UAsyncLoadingMonitoringService* AsyncLoadingMonitoringService; // 0x8e0(0x08)
-	struct AActorOfInterestService* ActorOfInterestService; // 0x8e8(0x08)
-	struct AEnemyAIOnShipService* EnemyAIOnShipService; // 0x8f0(0x08)
-	struct AUserSettingsService* UserSettingsService; // 0x8f8(0x08)
-	struct AGuildService* GuildService; // 0x900(0x08)
-	struct UGuildChroniclesService* GuildChroniclesService; // 0x908(0x08)
-	struct APlayerLootMarkerService* PlayerLootMarkerService; // 0x910(0x08)
-	struct AInventoryPersistenceService* InventoryPersistenceService; // 0x918(0x08)
-	struct AAdventureOnDemandService* AdventureOnDemandService; // 0x920(0x08)
-	struct AScrambledNamesService* ScrambledNamesService; // 0x928(0x08)
-	struct UExperienceService* ExperienceService; // 0x930(0x08)
-	struct UQuestTableService* QuestTableService; // 0x938(0x08)
-	struct ACompetitiveVoyagesService* CompetitiveVoyagesService; // 0x940(0x08)
-	char UnknownData_948[0x1c0]; // 0x948(0x1c0)
-	char ServiceCoordinator[0x20]; // 0xa60(0x20)
-	char UnknownData_B28[0x28]; // 0xb28(0x28)
-	char ChatComponents[0x10]; // 0xaa8(0x10)
-	char UnknownData_B60[0xb0]; // 0xb60(0xb0)
-	bool IsXboxGamePadOnlyServer; // 0xb38(0x01)
-	bool ShouldDisableAsyncOcclusionCheck; // 0xb39(0x01)
-	char UnknownData_C12[0x6]; // 0xc12(0x06)
-	struct FString SubPlayMode; // 0xc18(0x10)
-	struct UCustomVaultService* CustomVaultService; // 0xc28(0x08)
-	struct UEntityEnumerationService* EntityEnumerationService; // 0xc30(0x08)
-	struct ULevelAssetCachingService* LevelAssetCachingService; // 0xc38(0x08)
-	struct UCrewSkillRatingService* CrewSkillRatingService; // 0xc40(0x08)
-	char UnknownData_C48[0x50]; // 0xc48(0x50)
+	char UnknownData_00[0x540]; // 0x0(0x540)
+	char UnknownData_540[0x78]; // 0x540(0x78)
+	struct AWindService* WindService; // 0x5b8(0x08)
+	struct APlayerManagerService* PlayerManagerService; // 0x5c0(0x08)
+	struct AShipService* ShipService; // 0x5c8(0x08)
+	struct AWatercraftService* WatercraftService; // 0x5d0(0x08)
+	struct ATimeService* TimeService; // 0x5d8(0x08)
+	struct UHealthCustomizationService* HealthService; // 0x5e0(0x08)
+	struct UCustomWeatherService* CustomWeatherService; // 0x5e8(0x08)
+	struct UCustomStatusesService* CustomStatusesService; // 0x5f0(0x08)
+	struct AFFTWaterService* WaterService; // 0x5f8(0x08)
+	struct AStormService* StormService; // 0x600(0x08)
+	struct ACrewService* CrewService; // 0x608(0x08)
+	struct ACaptainedSessionService* CaptainedSessionService; // 0x610(0x08)
+	struct AContestZoneService* ContestZoneService; // 0x618(0x08)
+	struct AIslandService* IslandService; // 0x620(0x08)
+	struct ANPCService* NPCService; // 0x628(0x08)
+	struct ASkellyFortService* SkellyFortService; // 0x630(0x08)
+	struct ADeepSeaRegionService* DeepSeaRegionService; // 0x638(0x08)
+	struct UAIActionSpotService* AIActionSpotService; // 0x640(0x08)
+	struct AAIDioramaService* AIDioramaService; // 0x648(0x08)
+	struct AAshenLordEncounterService* AshenLordEncounterService; // 0x650(0x08)
+	struct AAggressiveGhostShipsEncounterService* AggressiveGhostShipsEncounterService; // 0x658(0x08)
+	struct ATallTaleService* TallTaleService; // 0x660(0x08)
+	struct AAIShipObstacleService* AIShipObstacleService; // 0x668(0x08)
+	struct AAIShipService* AIShipService; // 0x670(0x08)
+	struct AAITargetService* AITargetService; // 0x678(0x08)
+	struct UShipLiveryCatalogueService* ShipLiveryCatalogueService; // 0x680(0x08)
+	struct ADrawDebugService* DrawDebugService; // 0x688(0x08)
+	struct AWorldEventZoneService* WorldEventZoneService; // 0x690(0x08)
+	struct UWorldResourceRegistry* WorldResourceRegistry; // 0x698(0x08)
+	struct AKrakenService* KrakenService; // 0x6a0(0x08)
+	struct UPlayerNameService* PlayerNameService; // 0x6a8(0x08)
+	struct ATinySharkService* TinySharkService; // 0x6b0(0x08)
+	struct AProjectileService* ProjectileService; // 0x6b8(0x08)
+	struct AProjectileHitRegService* ProjectileHitRegService; // 0x6c0(0x08)
+	struct ULaunchableProjectileService* LaunchableProjectileService; // 0x6c8(0x08)
+	struct UServerNotificationsService* ServerNotificationsService; // 0x6d0(0x08)
+	struct AAIManagerService* AIManagerService; // 0x6d8(0x08)
+	struct AAIEncounterService* AIEncounterService; // 0x6e0(0x08)
+	struct AAIEncounterGenerationService* AIEncounterGenerationService; // 0x6e8(0x08)
+	struct UEncounterService* EncounterService; // 0x6f0(0x08)
+	struct UGameEventSchedulerService* GameEventSchedulerService; // 0x6f8(0x08)
+	struct UGameEventsOnDemandAvailabilityService* GameEventsOnDemandAvailabilityService; // 0x700(0x08)
+	struct AGameEventsOnDemandLoserTunnelService* GameEventsOnDemandLoserTunnelService; // 0x708(0x08)
+	struct UHideoutService* HideoutService; // 0x710(0x08)
+	struct UAthenaStreamedLevelService* StreamedLevelService; // 0x718(0x08)
+	struct ULocationProviderService* LocationProviderService; // 0x720(0x08)
+	struct AHoleService* HoleService; // 0x728(0x08)
+	struct APlayerBuriedItemService* PlayerBuriedItemService; // 0x730(0x08)
+	struct ULoadoutService* LoadoutService; // 0x738(0x08)
+	struct UOcclusionService* OcclusionService; // 0x740(0x08)
+	struct UPetsService* PetsService; // 0x748(0x08)
+	struct UAthenaAITeamsService* AthenaAITeamsService; // 0x750(0x08)
+	struct AAllianceService* AllianceService; // 0x758(0x08)
+	struct UMaterialAccessibilityService* MaterialAccessibilityService; // 0x760(0x08)
+	struct UNPCLoadedOnClientService* NPCLoadedOnClientService; // 0x768(0x08)
+	struct AReapersMarkService* ReapersMarkService; // 0x770(0x08)
+	struct AEmissaryLevelService* EmissaryLevelService; // 0x778(0x08)
+	struct AFactionService* FactionService; // 0x780(0x08)
+	struct ACampaignService* CampaignService; // 0x788(0x08)
+	struct AStoryService* StoryService; // 0x790(0x08)
+	struct AStorySpawnedActorsService* StorySpawnedActorsService; // 0x798(0x08)
+	struct AStoryClaimedResourcesService* StoryClaimedResourcesService; // 0x7a0(0x08)
+	struct UGlobalVoyageDirectorService* GlobalVoyageDirector; // 0x7a8(0x08)
+	struct UUtilityVoyageService* UtilityVoyageService; // 0x7b0(0x08)
+	struct AFlamesOfFateSettingsService* FlamesOfFateSettingsService; // 0x7b8(0x08)
+	struct AServiceStatusNotificationsService* ServiceStatusNotificationsService; // 0x7c0(0x08)
+	struct UMigrationService* MigrationService; // 0x7c8(0x08)
+	struct UShipStockService* ShipStockService; // 0x7d0(0x08)
+	struct AShroudBreakerService* ShroudBreakerService; // 0x7d8(0x08)
+	struct UServerUpdateReportingService* ServerUpdateReportingService; // 0x7e0(0x08)
+	struct AGenericMarkerService* GenericMarkerService; // 0x7e8(0x08)
+	struct AMechanismsService* MechanismsService; // 0x7f0(0x08)
+	struct UMerchantContractsService* MerchantContractsService; // 0x7f8(0x08)
+	struct UShipFactory* ShipFactory; // 0x800(0x08)
+	struct URewindPhysicsService* RewindPhysicsService; // 0x808(0x08)
+	struct UNotificationMessagesDataAsset* NotificationMessagesDataAsset; // 0x810(0x08)
+	struct AProjectileCooldownService* ProjectileCooldownService; // 0x818(0x08)
+	struct UIslandReservationService* IslandReservationService; // 0x820(0x08)
+	struct APortalService* PortalService; // 0x828(0x08)
+	struct UMeshMemoryConstraintService* MeshMemoryConstraintService; // 0x830(0x08)
+	struct ABootyStorageService* BootyStorageService; // 0x838(0x08)
+	struct ALoadoutCostService* LoadoutCostService; // 0x840(0x08)
+	struct ASpireService* SpireService; // 0x848(0x08)
+	struct AFireworkService* FireworkService; // 0x850(0x08)
+	struct AInvasionService* InvasionService; // 0x858(0x08)
+	struct UAirGivingService* AirGivingService; // 0x860(0x08)
+	struct UCutsceneService* CutsceneService; // 0x868(0x08)
+	struct ACargoRunService* CargoRunService; // 0x870(0x08)
+	struct ACommodityDemandService* CommodityDemandService; // 0x878(0x08)
+	struct ADebugTeleportationDestinationService* DebugTeleportationDestinationService; // 0x880(0x08)
+	struct ASeasonProgressionUIService* SeasonProgressionUIService; // 0x888(0x08)
+	struct UTransientActorService* TransientActorService; // 0x890(0x08)
+	struct ATunnelsOfTheDamnedService* TunnelsOfTheDamnedService; // 0x898(0x08)
+	struct UWorldSequenceService* WorldSequenceService; // 0x8a0(0x08)
+	struct UItemLifetimeManagerService* ItemLifetimeManagerService; // 0x8a8(0x08)
+	struct AShipStorageJettisonService* ShipStorageJettisonService; // 0x8b0(0x08)
+	struct ASeaFortsService* SeaFortsService; // 0x8b8(0x08)
+	struct ACustomServerLocalisationService* CustomServerLocalisationService; // 0x8c0(0x08)
+	struct ABeckonService* BeckonService; // 0x8c8(0x08)
+	struct UVolcanoService* VolcanoService; // 0x8d0(0x08)
+	struct UShipAnnouncementService* ShipAnnouncementService; // 0x8d8(0x08)
+	struct AShipsLogService* ShipsLogService; // 0x8e0(0x08)
+	struct UAsyncLoadingMonitoringService* AsyncLoadingMonitoringService; // 0x8e8(0x08)
+	struct AActorOfInterestService* ActorOfInterestService; // 0x8f0(0x08)
+	struct AEnemyAIOnShipService* EnemyAIOnShipService; // 0x8f8(0x08)
+	struct AUserSettingsService* UserSettingsService; // 0x900(0x08)
+	struct AGuildService* GuildService; // 0x908(0x08)
+	struct UGuildChroniclesService* GuildChroniclesService; // 0x910(0x08)
+	struct APlayerLootMarkerService* PlayerLootMarkerService; // 0x918(0x08)
+	struct AInventoryPersistenceService* InventoryPersistenceService; // 0x920(0x08)
+	struct AAdventureOnDemandService* AdventureOnDemandService; // 0x928(0x08)
+	struct AScrambledNamesService* ScrambledNamesService; // 0x930(0x08)
+	struct UExperienceService* ExperienceService; // 0x938(0x08)
+	struct UQuestTableService* QuestTableService; // 0x940(0x08)
+	struct ACompetitiveVoyagesService* CompetitiveVoyagesService; // 0x948(0x08)
+	char UnknownData_958[0x1c0]; // 0x958(0x1c0)
+	char ServiceCoordinator[0x20]; // 0xb18(0x20)
+	char UnknownData_B38[0x28]; // 0xb38(0x28)
+	char ChatComponents[0x10]; // 0xb60(0x10)
+	char UnknownData_B70[0xb0]; // 0xb70(0xb0)
+	bool IsXboxGamePadOnlyServer; // 0xc20(0x01)
+	bool ShouldDisableAsyncOcclusionCheck; // 0xc21(0x01)
+	char UnknownData_C22[0x6]; // 0xc22(0x06)
+	struct FString SubPlayMode; // 0xc28(0x10)
+	struct UCustomVaultService* CustomVaultService; // 0xc38(0x08)
+	struct UEntityEnumerationService* EntityEnumerationService; // 0xc40(0x08)
+	struct ULevelAssetCachingService* LevelAssetCachingService; // 0xc48(0x08)
+	struct UCrewSkillRatingService* CrewSkillRatingService; // 0xc50(0x08)
+	char UnknownData_C58[0x50]; // 0xc58(0x50)
 };
 
-// Class Athena.ItemDesc
-// Size: 0x120 (Inherited: 0xc8)
 struct UItemDesc {
 	char pad_28[0x28];
 	FString* Title; // 0x28(0x38)
@@ -875,11 +761,9 @@ struct UItemDesc {
 struct UItemDescEx : UObject {
 	struct FText Title; // 0x28(0x38)
 	struct FText Description; // 0x60(0x38)
-	//char pad_60[0x68];
 	char pad_98[0x30];
 	char pad_c0[0x58];
 };
-
 
 // Class Athena.ItemInfo
 // Size: 0x530 (Inherited: 0x3c8)
@@ -965,11 +849,6 @@ struct ACharacter : APawn {
 		return IsA(obj);
 	}
 
-	inline bool isLadder() {
-		static auto obj = UObject::FindClass("Class Athena.Ladder");
-		return IsA(obj);
-	}
-
 	inline bool isPuzzleVault() {
 		static auto obj = UObject::FindClass("Class Athena.PuzzleVault");
 		return IsA(obj);
@@ -1002,20 +881,6 @@ struct ACharacter : APawn {
 		bool isInWater = false;
 		ProcessEvent(this, fn, &isInWater);
 		return isInWater;
-	}
-
-	bool IsCanJump() {
-		static auto fn = UObject::FindObject<UFunction>("Function Engine.Character.CanJump");
-		bool IsCanJump = false;
-		ProcessEvent(this, fn, &IsCanJump);
-		return IsCanJump;
-	}
-
-	bool IsJump() {
-		static auto fn = UObject::FindObject<UFunction>("Function Engine.Character.Jump");
-		bool IsJump = false;
-		ProcessEvent(this, fn, &IsJump);
-		return IsJump;
 	}
 
 	bool isWeapon() {
@@ -1181,7 +1046,6 @@ struct ACharacter : APawn {
 		return params.ReturnValue;
 	}
 
-
 	inline bool compareName(const char* name)
 	{
 		auto type = GetName();
@@ -1209,45 +1073,43 @@ struct FStorageContainerBackingStore {
 	char CachedAllowedItems[0x8]; // 0x38(0x08)
 };
 
-struct ASeagulls2 {
-
-	static UClass* StaticClass()
-	{
-		static auto ptr = UObject::FindObject<UClass>(("BlueprintGeneratedClass BP_Seagull01_32POI_Circling_Shipwreck.BP_Seagull01_32POI_Circling_Shipwreck_C"));
-		return ptr;
-	}
-};
-
-
 // Class Athena.StorageContainerComponent
 // Size: 0x3c0 (Inherited: 0xc8)
 struct UStorageContainerComponent {
 	char pad_00[0xc8];
 	char UnknownData_C8[0x20]; // 0xc8(0x20)
-	char ContainerDisplayName[0x38]; // 0xe0(0x38)
+	char ContainerDisplayName[0x38]; // 0xe8(0x38)
 	char InstanceTransform[0x30]; // 0x120(0x30)
 	struct FStorageContainerBackingStore ContainerNodes; // 0x150(0x40)
-	char ReplicatedContainerNodes[0x48]; // 0x190(0x48)
-	char PredictedTakeCounts[0x50]; // 0x1d8(0x50)
 	char UnknownData_228[0x8]; // 0x228(0x08)
-	struct TArray<struct AActor*> QuickGivers; // 0x190(0x10)
-	struct TArray<struct AActor*> QuickTakers; // 0x1a0(0x10)
-	char AddItemSFX[0x8]; // 0x1b0(0x08)
-	char TakeItemSFX[0x8]; // 0x1b8(0x08)
-	char OpenContainerSFX[0x8]; // 0x1c0(0x08)
-	char BeginQuickGiveSFX[0x8]; // 0x1c8(0x08)
-	char EndQuickGiveSFX[0x8]; // 0x1d0(0x08)
-	char BeginQuickTakeSFX[0x8]; // 0x1d8(0x08)
-	char EndQuickTakeSFX[0x8]; // 0x1e0(0x08)
+	struct TArray<struct AActor*> QuickGivers; // 0x230(0x10)
+	struct TArray<struct AActor*> QuickTakers; // 0x240(0x10)
+	char AddItemSFX[0x8]; // 0x250(0x08)
+	char TakeItemSFX[0x8]; // 0x258(0x08)
+	char OpenContainerSFX[0x8]; // 0x260(0x08)
+	char BeginQuickGiveSFX[0x8]; // 0x268(0x08)
+	char EndQuickGiveSFX[0x8]; // 0x270(0x08)
+	char BeginQuickTakeSFX[0x8]; // 0x278(0x08)
+	char EndQuickTakeSFX[0x8]; // 0x280(0x08)
 	char CrateFillerContainerSelector[0x8]; // 0x288(0x08)
-	char StorageContainerSelector[0x8]; // 0x1e8(0x08)
+	char StorageContainerSelector[0x8]; // 0x290(0x08)
 	char UnknownData_298[0x30]; // 0x298(0x30)
-	char SfxPool[0x8]; // 0x220(0x08)
+	char SfxPool[0x8]; // 0x2c8(0x08)
 	char UnknownData_2D0[0x40]; // 0x2d0(0x40)
-	bool ShowCapacityInDescription; // 0x268(0x01)
+	bool ShowCapacityInDescription; // 0x310(0x01)
 	char UnknownData_311[0x9f]; // 0x311(0x9f)
-	char Aggregator[0x8]; // 0x308(0x08)
+	char Aggregator[0x8]; // 0x3b0(0x08)
 	char UnknownData_3B8[0x8]; // 0x3b8(0x08)
+
+
+
+	//void TakeItem(struct AActor* Player, int32_t NodeIndex); // Function Athena.StorageContainerComponent.TakeItem // Final|Native|Public|BlueprintCallable // @ game+0x38b5810
+	//void OnRep_QuickTakers(struct TArray<struct AActor*> InOldTakers); // Function Athena.StorageContainerComponent.OnRep_QuickTakers // Final|Native|Private // @ game+0x38b5560
+	//void OnRep_QuickGivers(struct TArray<struct AActor*> InOldGivers); // Function Athena.StorageContainerComponent.OnRep_QuickGivers // Final|Native|Private // @ game+0x38b5460
+	//void OnRep_ContentsChanged(struct FStorageContainerBackingStore InOldItemCount); // Function Athena.StorageContainerComponent.OnRep_ContentsChanged // Final|Native|Private // @ game+0x38b52d0
+	//void Multicast_DetachAllPlayersRPC(); // Function Athena.StorageContainerComponent.Multicast_DetachAllPlayersRPC // Final|Net|NetReliableNative|Event|NetMulticast|Private // @ game+0x38b52b0
+	//struct FText GetContainerDisplayName(); // Function Athena.StorageContainerComponent.GetContainerDisplayName // Final|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0x38b5220
+	//void AddItem(struct AActor* Player, struct UClass* InItemDesc); // Function Athena.StorageContainerComponent.AddItem // Final|Native|Public|BlueprintCallable // @ game+0x38b5010
 
 };
 
@@ -1263,43 +1125,6 @@ struct AStorageContainer {
 	char UnknownData_495[0x33]; // 0x495(0x33)
 	char random_Bytes[0x10];
 	class UStorageContainerComponent* StorageContainer;
-	class UStorageContainerComponent* StorageContainer1; //0x4E0
-	class UStorageContainerComponent* StorageContainer2; //0x688
-	class UStorageContainerComponent* StorageContainer3; //0x740
-	class UStorageContainerComponent* StorageContainer4; //0x818 
-};
-
-// Class Athena.BuoyantStorageContainer
-// Size: 0x730 (Inherited: 0x4c8)
-struct ABuoyantStorageContainer {
-	char pad[0x4c8];
-	char UnknownData_4C8[0x10]; // 0x4c8(0x10)
-	bool UseSocketForInteractionPoint; // 0x4d8(0x01)
-	char UnknownData_4D9[0x3]; // 0x4d9(0x03)
-	struct FName InteractionSocket; // 0x4dc(0x08)
-	char UnknownData_4E4[0xa4]; // 0x4e4(0xa4)
-	struct UShapeComponent* BaseComponent; // 0x588(0x08)
-	char PhysicsErrorCorrection[0x1c]; // 0x590(0x1c)
-	char UnknownData_5AC[0x4]; // 0x5ac(0x04)
-	struct UBuoyancyComponent* BuoyancyComponent; // 0x5b0(0x08)
-	struct UDitherComponent* DitherComponent; // 0x5b8(0x08)
-	char MovementTimeStamp[0x70]; // 0x5c0(0x70)
-	char ReplicatedPhysicsState[0x50]; // 0x630(0x50)
-	char UnknownData_680[0x8]; // 0x680(0x08)
-	struct UWaterInteractionComponent* WaterInteractionComponent; // 0x688(0x08)
-	struct URetractableFloatingBarrelComponent* RetractableComponent; // 0x690(0x08)
-	char UnknownData_698[0x98]; // 0x698(0x98)
-	char random_Bytes[0x18];// 0x18 for  food and wood galleons's barrels
-	class UStorageContainerComponent* StorageContainer; //0x4d8
-	class UStorageContainerComponent* StorageContainer1; //0x4E0
-	class UStorageContainerComponent* StorageContainer2; //0x688
-	class UStorageContainerComponent* StorageContainer3; //0x740
-	class UStorageContainerComponent* StorageContainer4; //0x818 
-	static UClass* StaticClass()
-	{
-		static auto ptr = UObject::FindObject<UClass>(("Class Athena.BuoyantStorageContainer"));
-		return ptr;
-	}
 };
 
 struct FFloatRange {
@@ -1315,38 +1140,7 @@ struct ACannonLoadedItemInfo
 {
 	char pad[0x770];
 	struct AItemInfo* LoadedItemInfo; // 0x770(0x08)
-	char pad3[0x40];
-	float ServerPitch; // 0x7b8(0x04)
-	float ServerYaw; // 0x7bc(0x04)
 };
-
-
-
-//Class Athena.HarpoonLauncher
-struct AHarpoonLauncher {
-	char pad[0xC6C];
-	FRotator rotation; // 0xC6C
-	// ROTATION OFFSET FOUND USING RECLASS.NET: https://www.unknowncheats.me/forum/sea-of-thieves/470590-reclass-net-plugin.html
-
-	void Server_RequestAim(float InPitch, float InYaw)
-	{
-		static auto fn = UObject::FindObject<UFunction>("Function Athena.HarpoonLauncher.Server_RequestAim");
-		struct {
-			float InPitch;
-			float InYaw;
-		} params;
-		params.InPitch = InPitch;
-		params.InYaw = InYaw;
-		ProcessEvent(this, fn, &params);
-	}
-
-	static UClass* StaticClass()
-	{
-		static auto ptr = UObject::FindObject<UClass>(("Class Athena.HarpoonLauncher"));
-		return ptr;
-	}
-};
-
 
 // Class Athena.Cannon
 // Size: 0xdb0 (Inherited: 0x510)
@@ -1429,7 +1223,7 @@ struct ACannon {
 	struct UParticleSystemComponent* LoadedItemVFXComp; // 0x7c0(0x08)
 	struct UStaticMesh* DefaultFuseMesh; // 0x7c8(0x08)
 	char UnknownData_7D0[0x5d0]; // 0x7d0(0x5d0)
-	char InteractionState; // 0xda0(0x01)
+	char InteractionState; // 0xce0(0x01)
 	char UnknownData_DA1[0xf]; // 0xda1(0x0f)
 
 	void HandlePitchInput(float Pitch)
@@ -1536,22 +1330,21 @@ struct FXMarksTheSpotMapMark {
 // Size: 0x950 (Inherited: 0x830)
 struct AXMarksTheSpotMap
 {
-	char pad1[0x0830];
-
-	int32_t CanvasWidth; // 0x7f0(0x04)
-	int32_t CanvasHeight; // 0x7f4(0x04)
-	struct UTexture* MarkTexture; // 0x7f8(0x08)
-	struct UTexture* AltMarkTexture; // 0x800(0x08)
-	struct UTexture* UndergroundMarkTexture; // 0x808(0x08)
-	struct UTexture* AltUndergroundMarkTexture; // 0x810(0x08)
-	float MarkWidthRatio; // 0x818(0x04)
-	float MarkHeightRatio; // 0x81c(0x04)
-	char MarkBlendMode; // 0x820(0x01)
+	char pad1[0x830];
+	int32_t CanvasWidth; // 0x830(0x04)
+	int32_t CanvasHeight; // 0x834(0x04)
+	struct UTexture* MarkTexture; // 0x838(0x08)
+	struct UTexture* AltMarkTexture; // 0x840(0x08)
+	struct UTexture* UndergroundMarkTexture; // 0x848(0x08)
+	struct UTexture* AltUndergroundMarkTexture; // 0x850(0x08)
+	float MarkWidthRatio; // 0x858(0x04)
+	float MarkHeightRatio; // 0x85c(0x04)
+	char MarkBlendMode; // 0x860(0x01)
 	char UnknownData_861[0x7]; // 0x861(0x07)
-	struct FString MapTexturePath; // 0x828(0x10)
-	char MapInventoryTexturePath[0x10]; // 0x838(0x10)
+	struct FString MapTexturePath; // 0x868(0x10)
+	char MapInventoryTexturePath[0x10]; // 0x878(0x10)
 	char UnknownData_888[0x70]; // 0x888(0x70)
-	struct TArray<struct FXMarksTheSpotMapMark> Marks; // 0x8b8(0x10)
+	struct TArray<struct FXMarksTheSpotMapMark> Marks; // 0x8f8(0x10)
 	char UnknownData_908[0x18]; // 0x908(0x18)
 	float Rotation; // 0x920(0x04)
 	char UnknownData_924[0x2c]; // 0x924(0x2c)
@@ -1560,8 +1353,8 @@ struct AXMarksTheSpotMap
 // Class Athena.WieldedItemComponent
 // Size: 0x440 (Inherited: 0x2e0)
 struct UWieldedItemComponent {
-	char pad[0x02F0];
-	ACharacter* CurrentlyWieldedItem; // 0x02F0
+	char pad[0x2f0];
+	ACharacter* CurrentlyWieldedItem; // 0x2f0(0x08)
 };
 
 
@@ -1611,83 +1404,79 @@ struct FAthenaCharacterSwimParams {
 struct UAthenaCharacterMovementComponent {
 	char pad_00[0x590];
 	char UnknownData_590[0x10]; // 0x590(0x10)
-	struct FAthenaCharacterSwimParams SwimParams; // 0x598(0x9c)
-	float SprintSpdAmp; // 0x634(0x04)
-	float SprintAccelAmp; // 0x638(0x04)
-	float LookAtYawRate; // 0x63c(0x04)
-	float LookAtPitchRate; // 0x640(0x04)
+	struct FAthenaCharacterSwimParams SwimParams; // 0x5a0(0x9c)
+	float SprintSpdAmp; // 0x63c(0x04)
+	float SprintAccelAmp; // 0x640(0x04)
+	float LookAtYawRate; // 0x644(0x04)
+	float LookAtPitchRate; // 0x648(0x04)
 	char UnknownData_64C[0x4]; // 0x64c(0x04)
-	float MaxSpeedRatioWhenWalkingInNonSwimWater; // 0x648(0x04)
-	float MaxAccelerationRatioWhenWalkingInNonSwimWater; // 0x64c(0x04)
-	char bCharacterCollisionSweepsEnabled : 1; // 0x650(0x01)
+	float MaxSpeedRatioWhenWalkingInNonSwimWater; // 0x650(0x04)
+	float MaxAccelerationRatioWhenWalkingInNonSwimWater; // 0x654(0x04)
+	char bCharacterCollisionSweepsEnabled : 1; // 0x658(0x01)
 	char UnknownData_658_1 : 7; // 0x658(0x01)
 	char UnknownData_659[0x3]; // 0x659(0x03)
-	float CharacterCollisionRadius; // 0x654(0x04)
-	char CharacterCollisionProfile[0x8]; // 0x658(0x08)
-	char CollisionPanicFallbackProfileName[0x8]; // 0x660(0x08)
-	float CharacterCollisionWalkingFriction; // 0x668(0x04)
-	float CharacterCollisionSwimmingFriction; // 0x66c(0x04)
-	float CharacterCollisionUnderwaterOffset; // 0x670(0x04)
-	float CharacterDepenetrationSmoothingMultiplier; // 0x67c(0x04)
-	char UnderwaterMovement[0x8]; // 0x678(0x08)
-	bool bCreateDisturbance; // 0x680(0x01)
+	float CharacterCollisionRadius; // 0x65c(0x04)
+	char CharacterCollisionProfile[0x8]; // 0x660(0x08)
+	char CollisionPanicFallbackProfileName[0x8]; // 0x668(0x08)
+	float CharacterCollisionWalkingFriction; // 0x670(0x04)
+	float CharacterCollisionSwimmingFriction; // 0x674(0x04)
+	float CharacterCollisionUnderwaterOffset; // 0x678(0x04)
+	char UnknownData_67C[0x4]; // 0x67c(0x04)
+	char UnderwaterMovement[0x8]; // 0x680(0x08)
+	bool bCreateDisturbance; // 0x688(0x01)
 	char UnknownData_689[0x3]; // 0x689(0x03)
-	float DisturbanceSize; // 0x684(0x04)
-	float DisturbanceVelocityScale; // 0x688(0x04)
-	bool UseAsRVOObstacleOnly; // 0x68c(0x01)
+	float DisturbanceSize; // 0x68c(0x04)
+	float DisturbanceVelocityScale; // 0x690(0x04)
+	bool UseAsRVOObstacleOnly; // 0x694(0x01)
 	char UnknownData_695[0x63]; // 0x695(0x63)
-	float FanPushOutAngle; // 0x6f0(0x04)
-	int32_t FanPushOutNumSteps; // 0x6f4(0x04)
-	float MaxFanPushOutScalar; // 0x6f8(0x04)
+	float FanPushOutAngle; // 0x6f8(0x04)
+	int32_t FanPushOutNumSteps; // 0x6fc(0x04)
+	float MaxFanPushOutScalar; // 0x700(0x04)
 	char UnknownData_704[0x4]; // 0x704(0x04)
-	char UnderwaterVelocityToAnglePitchProjectileHitVolume[0x8]; // 0x700(0x08)
-	char UnderwaterVelocityToAngleRollProjectileHitVolume[0x8]; // 0x708(0x08)
-	char UnderwaterVelocityToZOffsetProjectileHitVolume[0x8]; // 0x710(0x08)
-	char OnLandVelocityToAnglePitchProjectileHitVolume[0x8]; // 0x718(0x08)
-	char OnLandVelocityToXOffsetProjectileHitVolume[0x8]; // 0x720(0x08)
-	char OnLandVelocityToYOffsetProjectileHitVolume[0x8]; // 0x728(0x08)
-	char OnLandVelocityToZOffsetProjectileHitVolume[0x8]; // 0x730(0x08)
-	char FallingVelocityToAnglePitchProjectileHitVolume[0x8]; // 0x738(0x08)
-	char FallingVelocityToXOffsetProjectileHitVolume[0x8]; // 0x740(0x08)
-	char FallingVelocityToZOffsetProjectileHitVolume[0x8]; // 0x748(0x08)
+	char UnderwaterVelocityToAnglePitchProjectileHitVolume[0x8]; // 0x708(0x08)
+	char UnderwaterVelocityToAngleRollProjectileHitVolume[0x8]; // 0x710(0x08)
+	char UnderwaterVelocityToZOffsetProjectileHitVolume[0x8]; // 0x718(0x08)
+	char OnLandVelocityToAnglePitchProjectileHitVolume[0x8]; // 0x720(0x08)
+	char OnLandVelocityToXOffsetProjectileHitVolume[0x8]; // 0x728(0x08)
+	char OnLandVelocityToYOffsetProjectileHitVolume[0x8]; // 0x730(0x08)
+	char OnLandVelocityToZOffsetProjectileHitVolume[0x8]; // 0x738(0x08)
+	char FallingVelocityToAnglePitchProjectileHitVolume[0x8]; // 0x740(0x08)
+	char FallingVelocityToXOffsetProjectileHitVolume[0x8]; // 0x748(0x08)
+	char FallingVelocityToZOffsetProjectileHitVolume[0x8]; // 0x750(0x08)
 	char UnknownData_758[0xc8]; // 0x758(0xc8)
 	struct FName NonUnderwaterCollisionProfileName; // 0x820(0x08)
 	struct FName UnderwaterCollisionProfileName; // 0x828(0x08)
 	char UnknownData_830[0x30]; // 0x830(0x30)
 
-	void UnforceSwimmingClientTrustThreshold(); // Function Athena.AthenaCharacterMovementComponent.UnforceSwimmingClientTrustThreshold // Final|Native|Public|BlueprintCallable // @ game+0xc93e20
-	void SetMovementMode(char NewMovementMode, char NewCustomMode); // Function Athena.AthenaCharacterMovementComponent.SetMovementMode // Native|Public|BlueprintCallable // @ game+0xc929e0
-	void SetErrorOnResolvePenetration(bool ErrorOnResolve); // Function Athena.AthenaCharacterMovementComponent.SetErrorOnResolvePenetration // Final|Native|Public|BlueprintCallable // @ game+0xc922f0
-	bool HasValidAckedMoveClientOnly(); // Function Athena.AthenaCharacterMovementComponent.HasValidAckedMoveClientOnly // Final|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xc8f170
-	float GetTimestampOfMostRecentPredictedMoveClientOnly(); // Function Athena.AthenaCharacterMovementComponent.GetTimestampOfMostRecentPredictedMoveClientOnly // Final|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xc8e960
-	float GetTimestampOfLastAckedMoveClientOnly(); // Function Athena.AthenaCharacterMovementComponent.GetTimestampOfLastAckedMoveClientOnly // Final|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xc8e930
-	float GetTerminalVelocity(); // Function Athena.AthenaCharacterMovementComponent.GetTerminalVelocity // Final|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xc8e8c0
-	char GetMovementMode(); // Function Athena.AthenaCharacterMovementComponent.GetMovementMode // Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xc8e2d0
-	float GetMaxSprintSpeed(); // Function Athena.AthenaCharacterMovementComponent.GetMaxSprintSpeed // Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xc8e220
-	float GetMaxMoveSpeedScalar(); // Function Athena.AthenaCharacterMovementComponent.GetMaxMoveSpeedScalar // Final|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xc8e1f0
-	void ForceSwimmingClientTrustThreshold(float NewSwimmingClientTrustThreshold); // Function Athena.AthenaCharacterMovementComponent.ForceSwimmingClientTrustThreshold // Final|Native|Public|BlueprintCallable // @ game+0xc8b300
-	void FindCurrentFloor(); // Function Athena.AthenaCharacterMovementComponent.FindCurrentFloor // Final|Native|Public|BlueprintCallable // @ game+0xc8b000
+	void UnforceSwimmingClientTrustThreshold(); // Function Athena.AthenaCharacterMovementComponent.UnforceSwimmingClientTrustThreshold // Final|Native|Public|BlueprintCallable // @ game+0xda4200
+	void SetMovementMode(char NewMovementMode, char NewCustomMode); // Function Athena.AthenaCharacterMovementComponent.SetMovementMode // RequiredAPI|Native|Public|BlueprintCallable // @ game+0xda2d80
+	void SetErrorOnResolvePenetration(bool ErrorOnResolve); // Function Athena.AthenaCharacterMovementComponent.SetErrorOnResolvePenetration // Final|Native|Public|BlueprintCallable // @ game+0xda2690
+	bool HasValidAckedMoveClientOnly(); // Function Athena.AthenaCharacterMovementComponent.HasValidAckedMoveClientOnly // Final|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xd9f210
+	float GetTimestampOfMostRecentPredictedMoveClientOnly(); // Function Athena.AthenaCharacterMovementComponent.GetTimestampOfMostRecentPredictedMoveClientOnly // Final|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xd9ea00
+	float GetTimestampOfLastAckedMoveClientOnly(); // Function Athena.AthenaCharacterMovementComponent.GetTimestampOfLastAckedMoveClientOnly // Final|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xd9e9d0
+	float GetTerminalVelocity(); // Function Athena.AthenaCharacterMovementComponent.GetTerminalVelocity // Final|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xd9e960
+	char GetMovementMode(); // Function Athena.AthenaCharacterMovementComponent.GetMovementMode // RequiredAPI|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xd9e310
+	float GetMaxSprintSpeed(); // Function Athena.AthenaCharacterMovementComponent.GetMaxSprintSpeed // RequiredAPI|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xd9e260
+	float GetMaxMoveSpeedScalar(); // Function Athena.AthenaCharacterMovementComponent.GetMaxMoveSpeedScalar // Final|RequiredAPI|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0xd9e230
+	void ForceSwimmingClientTrustThreshold(float NewSwimmingClientTrustThreshold); // Function Athena.AthenaCharacterMovementComponent.ForceSwimmingClientTrustThreshold // Final|Native|Public|BlueprintCallable // @ game+0xd9b390
+	void FindCurrentFloor(); // Function Athena.AthenaCharacterMovementComponent.FindCurrentFloor // Final|Native|Public|BlueprintCallable // @ game+0xd9b090
 };
-
-
 // Class Athena.AthenaCharacter
 // Size: 0xc40 (Inherited: 0x5e0)
 struct AAthenaCharacter : ACharacter {
 	char pad[0x140];
-	struct UAthenaCharacterMovementComponent* CharacterMovementComponent; // 0x720(0x08) // Class Athena.AthenaCharacter
+	struct UAthenaCharacterMovementComponent* CharacterMovementComponent; // 0x720(0x08)
 	char pad2[0x158];
 	UWieldedItemComponent* WieldedItemComponent; // 0x880(0x08)
 	char pad3[0x3b8];
 };
 
-
-
 // Class Athena.AthenaPlayerCharacter
 // Size: 0x1ff0 (Inherited: 0xc40)
 struct AAthenaPlayerCharacter : AAthenaCharacter {
-	char pad[0x1D0];
+	char pad[0x1d0];
 	struct UDrowningComponent* DrowningComponent; // 0xe10(0x08)
-	char pad2[0x11D8];
+	char pad2[0x11d8];
 
 	ACharacter* GetWieldedItem() {
 		if (!WieldedItemComponent) return nullptr;
@@ -1701,14 +1490,14 @@ struct AAthenaPlayerCharacter : AAthenaCharacter {
 struct UDrowningComponent {
 	char pad[0x110];
 	float OxygenLevel; // 0x110(0x04)
-	char pad2[0xB4];
+	char pad2[0xb4];
 
 	float GetOxygenLevel() {
 		static auto fn = UObject::FindObject<UFunction>("Function Athena.DrowningComponent.GetOxygenLevel");
 		float oxygen;
 		ProcessEvent(this, fn, &oxygen);
 		return oxygen;
-	}
+	} // Function Athena.DrowningComponent.GetOxygenLevel // Final|Native|Public|BlueprintCallable|BlueprintPure|Const // @ game+0x39cb270
 };
 
 struct AGameCustomizationService_SetTime_Params
@@ -1730,6 +1519,7 @@ struct FMinimalViewInfo {
 	FVector Location;
 	FRotator Rotation;
 	char UnknownData_18[0x10];
+	//float FOV;
 };
 
 // ScriptStruct Engine.CameraCacheEntry
@@ -1739,7 +1529,6 @@ struct FCameraCacheEntry {
 	char pad[0xc];
 	FMinimalViewInfo POV;
 };
-
 
 // ScriptStruct Engine.TViewTarget
 // Size: 0x5c0 (Inherited: 0x00)
@@ -1753,11 +1542,10 @@ struct FTViewTarget
 
 };
 
-
 // Class Engine.PlayerCameraManager
 // Size: 0x1c60 (Inherited: 0x3c8)
 struct APlayerCameraManager {
-	char pad[0x0440];
+	char pad[0x440];
 	FCameraCacheEntry CameraCache; // 0x440(0x5b0)
 	FCameraCacheEntry LastFrameCameraCache;
 	FTViewTarget ViewTarget;
@@ -1789,7 +1577,6 @@ struct FKey
 	FKey(const char* InName) : KeyName(FName(InName)) {}
 };
 
-
 struct AController_K2_GetPawn_Params
 {
 	class APawn* ReturnValue;
@@ -1797,7 +1584,7 @@ struct AController_K2_GetPawn_Params
 
 struct AController {
 
-	char pad_0000[0x03E0];
+	char pad_0000[0x3e0];
 	class ACharacter* Character; // 0x3e0(0x08) // Class Engine.Controller
 	char pad_0480[0x70];
 	APlayerCameraManager* PlayerCameraManager; // 0x458(0x08) // Class Engine.PlayerController
@@ -1909,69 +1696,69 @@ struct AController {
 // Class Engine.PlayerController
 // Size: 0x770 (Inherited: 0x428)
 struct APlayerController : AController {
-	struct UPlayer* Player; // 0x430(0x08)
+	struct UPlayer* Player; // 0x428(0x08)
 	char UnknownData_430[0x8]; // 0x430(0x08)
-	struct APawn* AcknowledgedPawn; // 0x440(0x08)
-	struct UInterpTrackInstDirector* ControllingDirTrackInst; // 0x448(0x08)
+	struct APawn* AcknowledgedPawn; // 0x438(0x08)
+	struct UInterpTrackInstDirector* ControllingDirTrackInst; // 0x440(0x08)
 	char UnknownData_448[0x8]; // 0x448(0x08)
-	struct AHUD* MyHUD; // 0x458(0x08)
-	struct APlayerCameraManager* PlayerCameraManager; // 0x460(0x08)
-	struct UClass* PlayerCameraManagerClass; // 0x468(0x08)
-	bool bAutoManageActiveCameraTarget; // 0x470(0x01)
+	struct AHUD* MyHUD; // 0x450(0x08)
+	struct APlayerCameraManager* PlayerCameraManager; // 0x458(0x08)
+	struct UClass* PlayerCameraManagerClass; // 0x460(0x08)
+	bool bAutoManageActiveCameraTarget; // 0x468(0x01)
 	char UnknownData_469[0x3]; // 0x469(0x03)
-	struct FRotator TargetViewRotation; // 0x474(0x0c)
+	struct FRotator TargetViewRotation; // 0x46c(0x0c)
 	char UnknownData_478[0x10]; // 0x478(0x10)
-	struct TArray<struct AActor*> HiddenActors; // 0x490(0x10)
-	float LastSpectatorStateSynchTime; // 0x4a0(0x04)
-	struct FVector LastSpectatorSyncLocation; // 0x4a4(0x0c)
-	struct FRotator LastSpectatorSyncRotation; // 0x4b0(0x0c)
-	int32_t ClientCap; // 0x4bc(0x04)
-	struct UCheatManager* CheatManager; // 0x4c0(0x08)
-	struct UClass* CheatClass; // 0x4c8(0x08)
-	struct UPlayerInput* PlayerInput; // 0x4d0(0x08)
-	struct TArray<struct FActiveForceFeedbackEffect> ActiveForceFeedbackEffects; // 0x4d8(0x10)
+	struct TArray<struct AActor*> HiddenActors; // 0x488(0x10)
+	float LastSpectatorStateSynchTime; // 0x498(0x04)
+	struct FVector LastSpectatorSyncLocation; // 0x49c(0x0c)
+	struct FRotator LastSpectatorSyncRotation; // 0x4a8(0x0c)
+	int32_t ClientCap; // 0x4b4(0x04)
+	struct UCheatManager* CheatManager; // 0x4b8(0x08)
+	struct UClass* CheatClass; // 0x4c0(0x08)
+	struct UPlayerInput* PlayerInput; // 0x4c8(0x08)
+	struct TArray<struct FActiveForceFeedbackEffect> ActiveForceFeedbackEffects; // 0x4d0(0x10)
 	char UnknownData_4E0[0x90]; // 0x4e0(0x90)
 	char UnknownData_570_0 : 2; // 0x570(0x01)
-	char bPlayerIsWaiting : 1; // 0x578(0x01)
+	char bPlayerIsWaiting : 1; // 0x570(0x01)
 	char UnknownData_570_3 : 5; // 0x570(0x01)
 	char UnknownData_571[0x3]; // 0x571(0x03)
-	char NetPlayerIndex; // 0x57c(0x01)
-	bool bHasVoiceHandshakeCompleted; // 0x57d(0x01)
+	char NetPlayerIndex; // 0x574(0x01)
+	bool bHasVoiceHandshakeCompleted; // 0x575(0x01)
 	char UnknownData_576[0x2]; // 0x576(0x02)
-	struct UNetConnection* PendingSwapConnection; // 0x580(0x08)
-	struct UNetConnection* NetConnection; // 0x588(0x08)
+	struct UNetConnection* PendingSwapConnection; // 0x578(0x08)
+	struct UNetConnection* NetConnection; // 0x580(0x08)
 	char UnknownData_588[0xc]; // 0x588(0x0c)
-	float InputYawScale; // 0x59c(0x04)
-	float InputPitchScale; // 0x5a0(0x04)
-	float InputRollScale; // 0x5a4(0x04)
-	char bShowMouseCursor : 1; // 0x5a8(0x01)
-	char bEnableClickEvents : 1; // 0x5a8(0x01)
-	char bEnableTouchEvents : 1; // 0x5a8(0x01)
-	char bEnableMouseOverEvents : 1; // 0x5a8(0x01)
-	char bEnableTouchOverEvents : 1; // 0x5a8(0x01)
-	char bForceFeedbackEnabled : 1; // 0x5a8(0x01)
+	float InputYawScale; // 0x594(0x04)
+	float InputPitchScale; // 0x598(0x04)
+	float InputRollScale; // 0x59c(0x04)
+	char bShowMouseCursor : 1; // 0x5a0(0x01)
+	char bEnableClickEvents : 1; // 0x5a0(0x01)
+	char bEnableTouchEvents : 1; // 0x5a0(0x01)
+	char bEnableMouseOverEvents : 1; // 0x5a0(0x01)
+	char bEnableTouchOverEvents : 1; // 0x5a0(0x01)
+	char bForceFeedbackEnabled : 1; // 0x5a0(0x01)
 	char UnknownData_5A0_6 : 2; // 0x5a0(0x01)
 	char UnknownData_5A1[0x3]; // 0x5a1(0x03)
-	char DefaultMouseCursor; // 0x5ac(0x01)
-	char CurrentMouseCursor; // 0x5ad(0x01)
-	char DefaultClickTraceChannel; // 0x5ae(0x01)
-	char CurrentClickTraceChannel; // 0x5af(0x01)
-	float HitResultTraceDistance; // 0x5b0(0x04)
-	float ForceFeedbackIntensity; // 0x5b4(0x04)
+	char DefaultMouseCursor; // 0x5a4(0x01)
+	char CurrentMouseCursor; // 0x5a5(0x01)
+	char DefaultClickTraceChannel; // 0x5a6(0x01)
+	char CurrentClickTraceChannel; // 0x5a7(0x01)
+	float HitResultTraceDistance; // 0x5a8(0x04)
+	float ForceFeedbackIntensity; // 0x5ac(0x04)
 	char UnknownData_5B0[0x88]; // 0x5b0(0x88)
-	struct UInputComponent* InactiveStateInputComponent; // 0x640(0x08)
+	struct UInputComponent* InactiveStateInputComponent; // 0x638(0x08)
 	char UnknownData_640[0x20]; // 0x640(0x20)
-	struct UTouchInterface* CurrentTouchInterface; // 0x668(0x08)
+	struct UTouchInterface* CurrentTouchInterface; // 0x660(0x08)
 	char UnknownData_668[0x30]; // 0x668(0x30)
-	struct ASpectatorPawn* SpectatorPawn; // 0x6a0(0x08)
-	struct FVector SpawnLocation; // 0x6a8(0x0c)
+	struct ASpectatorPawn* SpectatorPawn; // 0x698(0x08)
+	struct FVector SpawnLocation; // 0x6a0(0x0c)
 	char UnknownData_6AC[0x4]; // 0x6ac(0x04)
-	char LevelInputComponents[0x50]; // 0x6b0(0x50)
+	char UnknownData_6B0[0x50]; // 0x6b0(0x50)
 	char UnknownData_700[0x14]; // 0x700(0x14)
-	bool bIsLocalPlayerController; // 0x71c(0x01)
+	bool bIsLocalPlayerController; // 0x714(0x01)
 	char UnknownData_715[0x1]; // 0x715(0x01)
-	uint16_t SeamlessTravelCount; // 0x71e(0x02)
-	uint16_t LastCompletedSeamlessTravelCount; // 0x720(0x02)
+	uint16_t SeamlessTravelCount; // 0x716(0x02)
+	uint16_t LastCompletedSeamlessTravelCount; // 0x718(0x02)
 	bool bInCinematicMode; // 0x71a(0x01)
 	char UnknownData_71B[0x55]; // 0x71b(0x55)
 
@@ -2116,20 +1903,46 @@ struct APlayerController : AController {
 	void ActivateTouchInterface(struct UTouchInterface* NewTouchInterface); // Function Engine.PlayerController.ActivateTouchInterface // Native|Public|BlueprintCallable // @ game+0x2b22540
 };
 
+/*
 // Class Engine.Level
 // Size: 0x300 (Inherited: 0x28)
+struct ULevel : UObject {
+	unsigned char UnknownData00[0x78]; // 0x0028(0x0078) MISSED OFFSET
+	TArray<class AActor*> AActors; // 0x00A0(0x0010)
+	unsigned char UnknownData10[0x18]; // 0x00B0(0x0018) MISSED OFFSET
+	struct ULevelActorContainer* ActorCluster; // 0xc8(0x08)
+	struct UWorld* OwningWorld; // 0xd0(0x08)
+	struct UModel* Model; // 0xd8(0x08)
+	struct TArray<struct UModelComponent*> ModelComponents; // 0xe0(0x10)
+	struct ALevelScriptActor* LevelScriptActor; // 0xf0(0x08)
+	struct ANavigationObjectBase* NavListStart; // 0xf8(0x08)
+	struct ANavigationObjectBase* NavListEnd; // 0x100(0x08)
+	struct TArray<struct UNavigationDataChunk*> NavDataChunks; // 0x108(0x10)
+	float LightmapTotalSize; // 0x118(0x04)
+	float ShadowmapTotalSize; // 0x11c(0x04)
+	struct TArray<struct FVector> StaticNavigableGeometry; // 0x120(0x10)
+	char UnknownData_130[0x130]; // 0x130(0x130)
+	bool LevelVisibility; // 0x260(0x01)
+	char UnknownData_261[0xf]; // 0x261(0x0f)
+	char UnknownData_270_0 : 3; // 0x270(0x01)
+	char Blocked : 1; // 0x270(0x01)
+	char UnknownData_270_4 : 4; // 0x270(0x01)
+	char UnknownData_271[0x67]; // 0x271(0x67)
+	struct TArray<struct UAssetUserData*> AssetUserData; // 0x2d8(0x10)
+	char UnknownData_2E8[0x18]; // 0x2e8(0x18)
+};*/
+
 struct ULevel
 {
 	char UnkownData[0xa0];
 	TArray<class ACharacter*> AActors; // 0x00A0(0x0010)
 };
 
-
 // Class Engine.Player
 // Size: 0x48 (Inherited: 0x28)
 struct UPlayer {
 	char UnknownData00[0x30];
-	APlayerController* PlayerController; // 0x30(0x08)
+	APlayerController* PlayerController;
 };
 
 // Class Engine.LocalPlayer
@@ -2525,51 +2338,11 @@ struct FAggressiveGhostShipState {
 // Class Athena.AggressiveGhostShip
 // Size: 0x880 (Inherited: 0x3c8)
 struct AAggressiveGhostShip : AActor {
-	char UnknownData_3C8[0x40]; // 0x3c8(0x40)
-	char OnPreparingToAnchorDrop[0x10]; // 0x408(0x10)
-	struct UAggressiveGhostShipDataAsset* DataAsset; // 0x418(0x08)
-	struct UAggressiveGhostShipDifficultyDataAsset* DifficultyDataAsset; // 0x420(0x08)
-	struct UAggressiveGhostShipMineFormationsDataAsset* MineFormationsDataAsset; // 0x428(0x08)
-	struct UAggressiveGhostShipLocationDataAsset* LocationDataAsset; // 0x430(0x08)
-	struct UAggressiveGhostShipShotSelectionDataAsset* ShotSelectionDataAsset; // 0x438(0x08)
-	char RewardsData[0x18]; // 0x440(0x18)
-	struct UClass* RewardMarker; // 0x458(0x08)
-	struct UBoxComponent* HitDetectionVolume; // 0x460(0x08)
-	struct UExplosionComponent* ShipDamageExplosionComponent; // 0x468(0x08)
-	struct UExplosionComponent* OnDeathPushBackExplosionComponent; // 0x470(0x08)
-	struct UShipDamageableComponent* ShipDamageableComponent; // 0x478(0x08)
-	struct UNamedPointsComponent* NamedPointsComponent; // 0x480(0x08)
-	struct USplineComponent* SplineComponent; // 0x488(0x08)
-	float MineSpawnZOffset; // 0x490(0x04)
-	float PortalEntryDistanceOffset; // 0x494(0x04)
-	float PortalSpawnZOffset; // 0x498(0x04)
-	struct FVector PortalSpawnScale; // 0x49c(0x0c)
-	struct UCurveFloat* ImpulseCurve; // 0x4a8(0x08)
-	char SplineData[0x50]; // 0x4b0(0x50)
-	char UnknownData_500[0x10]; // 0x500(0x10)
-	struct TArray<struct AAggressiveGhostShip*> GhostShipsToIgnore; // 0x510(0x10)
+	char UnknownData_3D0[0x158]; // 0x3d0(0x40)
 	struct FAggressiveGhostShipState ShipState; // 0x520(0x08)
-	bool HasMadeShipAppear; // 0x528(0x01)
-	char UnknownData_529[0x7]; // 0x529(0x07)
-	struct AAggressiveGhostShipPoolResource* PoolingResource; // 0x530(0x08)
-	bool IsOverlappingShip; // 0x538(0x01)
-	char UnknownData_539[0x3]; // 0x539(0x03)
-	float NumShotsLeftToKill; // 0x53c(0x04)
-	char RewardSpawner[0x58]; // 0x540(0x58)
-	bool IsInert; // 0x598(0x01)
-	char UnknownData_599[0x3]; // 0x599(0x03)
-	float ExtraDistanceAroundSplineOffset; // 0x59c(0x04)
-	struct UAggressiveGhostShipVisualsDataAsset* VisualsDataAsset; // 0x5a0(0x08)
-	char TrackedActorType; // 0x5a8(0x01)
-	char UnknownData_5A9[0x7]; // 0x5a9(0x07)
-	struct TArray<struct UClass*> AllProjectiles; // 0x5b0(0x10)
-	struct UStaticMeshComponent* VisibleMesh; // 0x5c0(0x08)
-	struct UParticleSystemComponent* HealthIndicatorEffect; // 0x5c8(0x08)
-	struct TArray<struct UStaticMeshComponent*> ExtraMeshes; // 0x5d0(0x10)
-	char UnknownData_5E0[0x180]; // 0x5e0(0x180)
-	struct TArray<struct UMeshComponent*> AllMeshes; // 0x760(0x10)
-	struct TArray<struct UMaterialInstanceDynamic*> AllMaterials; // 0x770(0x10)
-	char UnknownData_780[0x100]; // 0x780(0x100)
+	char UnknownData_530[0x14]; // 0x528(0x14)
+	int32_t NumShotsLeftToKill; // 0x53c(0x04)
+	char UnknownData_548[0x340]; // 0x540(0x338)
 };
 
 enum class EDrawDebugTrace : uint8_t
@@ -2658,6 +2431,7 @@ public:
 		ProcessEvent(defaultObj, fn, &params);
 	}
 };
+
 
 class UKismetMathLibrary {
 private:
@@ -2803,18 +2577,18 @@ enum class EMeleeWeaponMovementSpeed : uint8_t
 // Size: 0x250 (Inherited: 0x28)
 struct UMeleeAttackDataAsset
 {
-	char pad[0x0248];
-	float                                              ClampYawRange;                                             // 0x248(0x04) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash)
-	float                                              ClampYawRate;                                              // 0x24c(0x04) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash)
+	char pad[0x248];
+	float                                              ClampYawRange;                                             // 0x248(0x04)(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash)
+	float                                              ClampYawRate;                                              // 0x023C(0x0004) (Edit, BlueprintVisible, ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash)
 };
 
 // Class Athena.MeleeWeaponDataAsset
 // Size: 0xb0 (Inherited: 0x28)
 struct UMeleeWeaponDataAsset
 {
-	char pad[0x0048];
+	char pad[0x48];
 	class UMeleeAttackDataAsset* HeavyAttack; // 0x48(0x08)
-	char pad2[0x0028];
+	char pad2[0x28];
 	EMeleeWeaponMovementSpeed BlockingMovementSpeed; // 0x78(0x01)
 };
 
@@ -2822,7 +2596,7 @@ struct UMeleeWeaponDataAsset
 // Size: 0xb40 (Inherited: 0x7e0)
 struct AMeleeWeapon
 {
-	char pad[0x0808];
+	char pad[0x808];
 	struct UMeleeWeaponDataAsset* DataAsset; // 0x808(0x08)
 };
 
@@ -2853,13 +2627,13 @@ struct FWeaponProjectileParams {
 	struct UClass* ProjectileId; // 0x30(0x08)
 	char HealthChangeReason; // 0x38(0x01)UWorld
 	char UnknownData_39[0x3]; // 0x39(0x03)
-	char ProjectileEffects[0x68]; // 0x3c(0x68)
+	char UnknownData_3C[0x68]; // 0x3C(0x68)
 	int SuggestedMaxSimulationIterations; // 0xa4(0x04)
 	float SuggestedMinTickTimeSecs; // 0xa8(0x04)
 	float SuggestedMaxSimulationTimeStep; // 0xac(0x04)
-	int SuggestedFixedTimestepMaxSimulationIterations; // 0xb0(0x04)
-	float SuggestedFixedTimestepMinTickTimeSecs; // 0xb4(0x04)
-	float SuggestedFixedSimulationTimeStep; // 0xb8(0x04)
+	float HitScanTrailUpdateModifier; // 0xb0(0x04)
+	float HitScanTrailFadeOutTime; // 0xb4(0x04)
+	float HitScanTrailGrowthSpeed; // 0xb8(0x04)
 	char UnknownData_BC[0x4]; // 0xbc(0x04)
 };
 
@@ -2869,23 +2643,23 @@ struct FProjectileWeaponParameters {
 	int32_t AmmoClipSize; // 0x00(0x04)
 	int32_t AmmoCostPerShot; // 0x04(0x04)
 	float ChargingDuration; // 0x08(0x04)
-	float EquipDuration; // 0x08(0x04)
-	float IntoAimingDuration; // 0x0c(0x04)
-	float RecoilDuration; // 0x10(0x04)
-	float ReloadDuration; // 0x14(0x04)
-	struct FProjectileShotParams HipFireProjectileShotParams; // 0x18(0x1c)
-	struct FProjectileShotParams AimDownSightsProjectileShotParams; // 0x34(0x1c)
-	int32_t InaccuracySeed; // 0x50(0x04)
-	float ProjectileDistributionMaxAngle; // 0x54(0x04)
-	int32_t NumberOfProjectiles; // 0x58(0x04)
-	float ProjectileMaximumRange; // 0x5c(0x04)
-	float ProjectileHitScanMaximumRange; // 0x60(0x04)
-	float ProjectileDamage; // 0x64(0x04)
-	float ProjectileDamageMultiplierAtMaximumRange; // 0x68(0x04)
+	float EquipDuration; // 0x0c(0x04)
+	float IntoAimingDuration; // 0x10(0x04)
+	float RecoilDuration; // 0x14(0x04)
+	float ReloadDuration; // 0x18(0x04)
+	struct FProjectileShotParams HipFireProjectileShotParams; // 0x1c(0x1c)
+	struct FProjectileShotParams AimDownSightsProjectileShotParams; // 0x38(0x1c)
+	int32_t InaccuracySeed; // 0x54(0x04)
+	float ProjectileDistributionMaxAngle; // 0x58(0x04)
+	int32_t NumberOfProjectiles; // 0x5c(0x04)
+	float ProjectileMaximumRange; // 0x60(0x04)
+	float ProjectileHitScanMaximumRange; // 0x64(0x04)
+	float ProjectileDamage; // 0x68(0x04)
+	float ProjectileDamageMultiplierAtMaximumRange; // 0x6c(0x04)
 	struct UClass* DamagerType; // 0x70(0x08)
 	struct UClass* ProjectileId; // 0x78(0x08)
-	struct FWeaponProjectileParams AmmoParams; // 0x80(0xb0)
-	bool UsesScope; // 0x130(0x01)
+	struct FWeaponProjectileParams AmmoParams; // 0x80(0xc0)
+	bool UsesScope; // 0x140(0x01)
 	char UnknownData_141[0x3]; // 0x141(0x03)
 	float ZoomedRecoilDurationIncrease; // 0x144(0x04)
 	float SecondsUntilZoomStarts; // 0x148(0x04)
@@ -2897,19 +2671,18 @@ struct FProjectileWeaponParameters {
 	float AimingMoveSpeedScalar; // 0x160(0x04)
 	char AimSensitivitySettingCategory; // 0x164(0x01)
 	char UnknownData_165[0x3]; // 0x165(0x03)
-	float InAimFOV; // 0x158(0x04)
-	float BlendSpeed; // 0x15c(0x04)
-	char DryFireSfx[0x8]; // 0x160(0x08)
-	char EndOfBulletsNotificationSfx[0x8]; // 0x178(0x08)
-	char AudioEmitterParameters[0x10]; // 0x168(0x10)
-	struct FName RumbleTag; // 0x178(0x08)
-	bool KnockbackEnabled; // 0x180(0x01)
+	float InAimFOV; // 0x168(0x04)
+	float BlendSpeed; // 0x16c(0x04)
+	char DryFireSfx[0x8]; // 0x170(0x08)
+	char AudioEmitterParameters[0x10]; // 0x180(0x10)
+	struct FName RumbleTag; // 0x190(0x08)
+	bool KnockbackEnabled; // 0x198(0x01)
 	char UnknownData_199[0x3]; // 0x199(0x03)
-	char KnockbackParams[0x50]; // 0x184(0x50)
-	bool StunEnabled; // 0x1d4(0x01)
+	char KnockbackParams[0x50]; // 0x19c(0x50)
+	bool StunEnabled; // 0x1ec(0x01)
 	char UnknownData_1ED[0x3]; // 0x1ed(0x03)
-	float StunDuration; // 0x1d8(0x04)
-	struct FVector TargetingOffset; // 0x1dc(0x0c)
+	float StunDuration; // 0x1f0(0x04)
+	struct FVector TargetingOffset; // 0x1f4(0x0c)
 	bool OverridePlayerCharacterInterpolationConeAngleAndDistanceWhenAiming; // 0x200(0x01)
 	char UnknownData_201[0x3]; // 0x201(0x03)
 	float OverridePlayerCharacterInterpolationConeAngleAndDistanceDuration; // 0x204(0x04)
@@ -2918,17 +2691,16 @@ struct FProjectileWeaponParameters {
 };
 
 // Class Athena.ProjectileWeapon
-// Size: 0xb60 (Inherited: 0x7e0)
+// Size: 0xb70 (Inherited: 0x7e0)
 struct AProjectileWeapon {
 	char pad[0x828];
 	FProjectileWeaponParameters WeaponParameters; // 0x828(0x210)
-	char State; // 0x9b0(0x01)
+	char State; // 0xa38(0x01)
 	char UnknownData_A39[0x3]; // 0xa39(0x03)
-	int32_t AmmoLeft; // 0x9b4(0x04)
-	char UnknownData_A40[0x8]; // 0xa40(0x08)
-	char AimSensitivityComponent[0x8]; // 0x9b8(0x08)
-	char UnknownData_A50[0x10]; // 0xa50(0x10)
-	char ProjectileWeaponType; // 0x9d0(0x01)
+	int32_t AmmoLeft; // 0xa3c(0x04)
+	char AimSensitivityComponent[0x8]; // 0xa40(0x08)
+	char UnknownData_A48[0x10]; // 0xa48(0x10)
+	char ProjectileWeaponType; // 0xa58(0x01)
 
 	bool CanFire()
 	{
@@ -2942,7 +2714,7 @@ struct AProjectileWeapon {
 };
 
 // Class Athena.TestProjectileWeapon
-// Size: 0xb30 (Inherited: 0xa50)
+// Size: 0xc50 (Inherited: 0xb70)
 struct ATestProjectileWeapon : AProjectileWeapon {
 	void FireInstantly()
 	{
@@ -2956,7 +2728,7 @@ struct ATestProjectileWeapon : AProjectileWeapon {
 // Size: 0x7b0 (Inherited: 0x3c8)
 struct AMapTable
 {
-	char pad[0x04E8];
+	char pad[0x4e8];
 	struct TArray<struct FVector2D> MapPins; // 0x4e8(0x10)
 	struct TArray<struct FWorldMapShipLocation> TrackedShips; // 0x4f8(0x10)
 };
@@ -2965,7 +2737,7 @@ struct AMapTable
 // Size: 0x7b0 (Inherited: 0x3c8)
 struct AMapTableESP
 {
-	char pad[0x0498];
+	char pad[0x498];
 	bool DisplayFactionShips; // 0x498(0x01)
 };
 
@@ -3020,6 +2792,7 @@ private:
 };
 
 // ScriptStruct Cooking.CookingClientRepresentation
+// Size: 0x68 (Inherited: 0x00)
 // 0x00A8
 struct FCookingClientRepresentation
 {
@@ -3069,7 +2842,7 @@ struct UCookerComponent {
 // Class Cooking.CookingPot
 // Size: 0x5e0 (Inherited: 0x400)
 struct ACookingPot {
-	char UnknownData_400[0x408];
+	char UnknownData_400[0x408]; // 0x0(0x400)
 	struct UStaticMeshComponent* MeshComponent; // 0x408(0x08)
 	struct UActionRulesInteractableComponent* InteractableComponent; // 0x408(0x08)
 	struct UCookerComponent* CookerComponent; // 0x410(0x08)
@@ -3095,12 +2868,14 @@ struct UCookableComponent {
 	struct UCurveFloat* VisibleCookedExtentOverTime; // 0x108(0x08)
 	float DefaultVisibleCookedExtent; // 0x110(0x04)
 	struct FName CookableTypeName; // 0x114(0x08)
+	//struct FPlayerStat CookedStat; // 0x11c(0x04)
+	//struct FPlayerStat ShipCookedStat; // 0x120(0x04)
 	char CookedStat[0x04]; // 0x11c(0x04)
 	char ShipCookedStat[0x04]; // 0x120(0x04)
 	char CookingState; // 0x124(0x01)
 	char InitialCookingState; // 0x125(0x01)
 	char RemovedCookingState; // 0x126(0x01)
-	bool IgnoreCookedFromRawStats; // 0x127(0x01)
+	char UnknownData_127[0x1]; // 0x127(0x01)
 };
 
 // Class Engine.CharacterMovementComponent
@@ -3133,9 +2908,9 @@ struct UCharacterMovementComponent {
 struct AOnlineAthenaPlayerController {
 	char pad_00[0x1740];
 	char UnknownData_1740[0x8]; // 0x1740(0x08)
-	char LogoutNoteCompletionIdent[0x8]; // 0x1570(0x08)
+	char LogoutNoteCompletionIdent[0x8]; // 0x1748(0x08)
 	char UnknownData_1750[0x19]; // 0x1750(0x19)
-	bool IdleDisconnectEnabled; // 0x1591(0x01)
+	bool IdleDisconnectEnabled; // 0x1769(0x01)
 	char UnknownData_176A[0xbe]; // 0x176a(0xbe)
 };
 
@@ -3144,37 +2919,38 @@ struct AOnlineAthenaPlayerController {
 struct ASpyglass {
 	char pad_00[0x7e0];
 	char UnknownData_7E0[0x10]; // 0x7e0(0x10)
-	char InventoryItem[0x8]; // 0x7b0(0x08)
-	char UsableWieldableComponent[0x8]; // 0x7b8(0x08)
-	char AimSensitivityComponent[0x8]; // 0x7c0(0x08)
+	char InventoryItem[0x8]; // 0x7f0(0x08)
+	char UsableWieldableComponent[0x8]; // 0x7f8(0x08)
+	char AimSensitivityComponent[0x8]; // 0x800(0x08)
 	char UnknownData_808[0x10]; // 0x808(0x10)
-	float NameplateVisibilityRangeExtensionFactorWhileZoomed; // 0x7d8(0x04)
-	float SecondsUntilZoomStarts; // 0x7dc(0x04)
-	float SecondsUntilPostStarts; // 0x7e0(0x04)
-	float InAimFOV; // 0x7e4(0x04)
-	float BlendSpeed; // 0x7e8(0x04)
-	char AimSpeedScaleParameters[0x8]; // 0x7ec(0x08)
+	float NameplateVisibilityRangeExtensionFactorWhileZoomed; // 0x818(0x04)
+	float SecondsUntilZoomStarts; // 0x81c(0x04)
+	float SecondsUntilPostStarts; // 0x820(0x04)
+	float InAimFOV; // 0x824(0x04)
+	float BlendSpeed; // 0x828(0x04)
+	char AimSpeedScaleParameters[0x8]; // 0x82c(0x08)
 	char UnknownData_834[0x4]; // 0x834(0x04)
-	char PostProcessComponent[0x8]; // 0x7f8(0x08)
-	char BlurCurve[0x8]; // 0x800(0x08)
+	char PostProcessComponent[0x8]; /// 0x838(0x08)
+	char BlurCurve[0x8]; // 0x840(0x08)
 	char UnknownData_848[0x38]; // 0x848(0x38)
-	char DynamicMaterial[0x8]; // 0x840(0x08)
-	bool TurningOn; // 0x848(0x01)
+	char DynamicMaterial[0x8]; // 0x880(0x08)
+	bool TurningOn; // 0x888(0x01)
 	char UnknownData_889[0x3]; // 0x889(0x03)
-	float BlurTime; // 0x84c(0x04)
-	float BlurInDuration; // 0x850(0x04)
-	float BlurOutDuration; // 0x854(0x04)
-	char Glint[0x8]; // 0x858(0x08)
-	char MaterialParen[0x8]; // 0x860(0x08)
-	char LensNormal[0x8]; // 0x868(0x08)
-	char LensMask[0x8]; // 0x870(0x08)
-	char LensTint[0x10]; // 0x878(0x10)
+	float BlurTime; // 0x88c(0x04)
+	float BlurInDuration; // 0x890(0x04)
+	float BlurOutDuration; // 0x894(0x04)
+	char Glint[0x8]; // 0x898(0x08)
+	char MaterialParen[0x8]; // 0x8a0(0x08)
+	char LensNormal[0x8]; // 0x8a8(0x08)
+	char LensMask[0x8]; // 0x8b0(0x08)
+	char LensTint[0x10]; // 0x8b8(0x10)
 	char UnknownData_8C8[0x8]; // 0x8c8(0x08)
 
 	void SpyGlassRaisedFirstPerson(bool IsRaised); // Function Athena.Spyglass.SpyGlassRaisedFirstPerson // Event|Protected|BlueprintEvent // @ game+0x179fa40
 	void SetGlintOff(); // Function Athena.Spyglass.SetGlintOff // Native|Public|BlueprintCallable // @ game+0x11489f0
 	void ResetSpyglassEffects(); // Function Athena.Spyglass.ResetSpyglassEffects // Final|Native|Public|BlueprintCallable // @ game+0x1148200
 };
+
 
 // ScriptStruct Athena.SailsBillowStateChangeRpc
 // Size: 0x18 (Inherited: 0x10)

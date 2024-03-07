@@ -3,7 +3,7 @@
 const FVector FVector::ZeroVector(0.0f, 0.0f, 0.0f);
 const FVector FVector::OneVector(1.0f, 1.0f, 1.0f);
 
-float FVector2D::Size() const { return sqrtf(X * X + Y * Y); }
+float FVector2D::Size() const  { return sqrtf(X * X + Y * Y); }
 
 void FMath::SinCos(float* ScalarSin, float* ScalarCos, float Value)
 {
