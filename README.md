@@ -58,7 +58,7 @@ https://github.com/McDaived/Sea-of-Gods/assets/18085492/9af67acf-f149-472c-ad48-
 ## ![](https://github.com/McDaived/NoRecoil-CS2/assets/18085492/7eab67ab-4b44-40ee-b050-53e48a856fc5)How to use :
 1. Compile Sea of Gods by ``VS`` -> select ``release 64x`` -> ``build it.``
 2. Inject DLL with ``Process Hacker 2`` or ``Cheat Engine``.. etc.
-3. Press ``[INS]`` or ``[HOME]`` to open menu .
+3. Press ``[INS]`` to open menu .
 
 **PS: This cheat works on directx 11 make sure force the game to load on dxd11
 because now it set by defult on dxd12..**
