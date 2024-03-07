@@ -76,7 +76,7 @@ or
 ## ![](https://github.com/McDaived/Discord-Profile-Card/assets/18085492/7a4879fd-97a1-4807-98e5-8f62137dee6e)Preview :
 
 
-![image](https://github.com/McDaived/Sea-of-Gods/assets/18085492/a36d4a65-8af1-41c9-8d7d-89ab93dce717)
+![image](https://i.imgur.com/ENVH0li.png)
 
 
 https://github.com/McDaived/Sea-of-Gods/assets/18085492/206800a9-f42d-4d17-a5c4-ce233845383c
