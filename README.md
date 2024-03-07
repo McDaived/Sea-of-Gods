@@ -2,7 +2,7 @@
 
 <h1 align="center">Sea Of Gods</h1>
 <p align="center">
-    <a href="https://github.com/McDaived/AIMi">
+    <a href="https://github.com/McDaived/Sea-of-Gods">
         <img src="https://github.com/McDaived/Sea-of-Gods/assets/18085492/2722d922-4b8e-4fd7-875a-eb4b67ce0881" alt="Logo" width="200" height="200">
     </a>
 <h4 align="center">it's a fork of Sea of Choros that was made by me, it's my first time making something to Sea of Thieves,
