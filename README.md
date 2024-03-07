@@ -6,7 +6,7 @@
         <img src="https://github.com/McDaived/Sea-of-Gods/assets/18085492/2722d922-4b8e-4fd7-875a-eb4b67ce0881" alt="Logo" width="200" height="200">
     </a>
 <h4 align="center">it's a fork of Sea of Choros that was made by me, it's my first time making something to Sea of Thieves,
-i have improved this cheat very much so that it works well by Change hook and make it works with all windows and rewrite the damaged codes and the aimbot code completely so that it works perfectly.</h4>
+i have improved this cheat very much so that it works well by change hook and make it works with all windows and rewrite the damaged codes and the aimbot code completely so that it works perfectly.</h4>
 <h6 align="center">Please give me a feedback about Sea Of Gods, if there is any problem with it, to fix it.</h6>
   
 ## ![](https://github.com/McDaived/NoRecoil-CS2/assets/18085492/fdee8c61-c0f7-41a2-80a0-15c1b5f5bb95)Information :
