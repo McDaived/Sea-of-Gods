@@ -178,6 +178,9 @@ public:
 				bool autoDetect = false;
 				bool drawPred = false;
 				bool improvedVersion = false;
+				bool skeletonthrone = false;
+				bool normal = false;
+				bool silent2 = false;
 			}cannon;
 			struct {
 				bool enable = false;
@@ -203,6 +206,9 @@ public:
 			bool noIdleKick = false;
 			bool shipInfo = false;
 			bool b_bunnyhop = false;
+			bool id = false;
+			FVector OriginInteractDistance = FVector(FLT_MAX, FLT_MAX, FLT_MAX);
+			bool il = false;
 		}game;
 		struct
 		{

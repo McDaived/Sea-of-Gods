@@ -1,7 +1,7 @@
 #pragma once
 
 constexpr auto PI = 3.1415926535897932f;
-constexpr auto FLOAT_NON_FRACTIONAL = 8388608.f /* All single-precision floating point numbers greater than or equal to this have no fractional value. */;
+constexpr auto FLOAT_NON_FRACTIONAL = 8388608.f 
 constexpr auto INV_PI = 0.31830988618f;
 constexpr auto HALF_PI = 1.57079632679f;
 constexpr auto DEG_TO_RAD = PI / 180.f;

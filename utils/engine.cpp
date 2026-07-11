@@ -454,7 +454,7 @@ void render(ImDrawList* drawList)
 					char bufff[0x64];
 					ZeroMemory(bufff, sizeof(bufff));
 					sprintf_s(bufff, _countof(bufff), "%ws", loaded_name.c_str());
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 20, ImVec2(1656.f, 225.f), ImColor(255, 255, 255, 255), bufff, 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 20, ImVec2(ImGui::GetIO().DisplaySize.x - 264.f, 225.f), ImColor(255, 255, 255, 255), bufff, 0, 0.0f, 0);
 				}
 
 				error_code = 801;
@@ -480,60 +480,90 @@ void render(ImDrawList* drawList)
 				}
 
 				int cannonlocalsets = 0;
+				const float cannonHudX = ImGui::GetIO().DisplaySize.x - 265.f;
 
 				if (cfg->aim.cannon.players)
 				{
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f), ImColor(0, 0, 0, 255), "Player Cannon Aimbot", 0, 0.0f, 0);
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f), ImColor(255, 165, 0, 255), "Player Cannon Aimbot", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX + 1.f, 303.f), ImColor(0, 0, 0, 255), "Player Cannon Aimbot", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX, 303.f), ImColor(255, 165, 0, 255), "Player Cannon Aimbot", 0, 0.0f, 0);
 					cannonlocalsets++;
 				}
 				if (cfg->aim.cannon.skeletons)
 				{
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Skeleton Aimbot", 0, 0.0f, 0);
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Skeleton Aimbot", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX + 1.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Skeleton Aimbot", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Skeleton Aimbot", 0, 0.0f, 0);
 					cannonlocalsets++;
 				}
 				if (cfg->aim.cannon.chains)
 				{
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Chain Aimbot", 0, 0.0f, 0);
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Chain Aimbot", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX + 1.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Chain Aimbot", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Chain Aimbot", 0, 0.0f, 0);
 					cannonlocalsets++;
 				}
 				if (cfg->aim.cannon.deckshots)
 				{
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Deck Shots", 0, 0.0f, 0);
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Deck Shots", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX + 1.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Deck Shots", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Deck Shots", 0, 0.0f, 0);
 					cannonlocalsets++;
 				}
 				if (cfg->aim.cannon.visibleOnly)
 				{
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Visible Only", 0, 0.0f, 0);
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Visible Only", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX + 1.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Visible Only", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Visible Only", 0, 0.0f, 0);
 					cannonlocalsets++;
 				}
 				if (cfg->aim.cannon.instant)
 				{
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Instant Shoot", 0, 0.0f, 0);
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Instant Shoot", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX + 1.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Instant Shoot", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Instant Shoot", 0, 0.0f, 0);
 					cannonlocalsets++;
 				}
 				if (cfg->aim.cannon.ghostShips)
 				{
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Ghost Ships", 0, 0.0f, 0);
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Ghost Ships", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX + 1.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Ghost Ships", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Ghost Ships", 0, 0.0f, 0);
 					cannonlocalsets++;
 				}
 				if (cfg->aim.cannon.lowAim)
 				{
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Damage Zone", 0, 0.0f, 0);
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Damage Zone", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX + 1.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Damage Zone", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Damage Zone", 0, 0.0f, 0);
 					cannonlocalsets++;
 				}
 				if (cfg->aim.cannon.drawPred)
 				{
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Cannon Pre-Fire", 0, 0.0f, 0);
-					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Cannon Pre-Fire", 0, 0.0f, 0);
-					
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX + 1.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Cannon Pre-Fire", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Cannon Pre-Fire", 0, 0.0f, 0);
+					cannonlocalsets++;
+
+				}
+				if (cfg->aim.cannon.silent2)
+				{
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX + 1.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Silent Aim Mode", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Silent Aim Mode", 0, 0.0f, 0);
+					cannonlocalsets++;
+
+				}
+				if (cfg->aim.cannon.normal)
+				{
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX + 1.f, 303.f + (float)(cannonlocalsets * 20)), ImColor(0, 0, 0, 255), "Normal Mode", 0, 0.0f, 0);
+					ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(cannonHudX, 303.f + (float)(cannonlocalsets * 20)), ImColor(255, 165, 0, 255), "Normal Mode", 0, 0.0f, 0);
+
+				}
+				static bool mode = true;
+				if (GetAsyncKeyState(VK_F5) & 0x1)
+				{
+					mode = !mode;
+				}
+				if (mode)
+				{
+					cfg->aim.cannon.normal = true;
+					cfg->aim.cannon.silent2 = false;
+				}
+				else
+				{
+					cfg->aim.cannon.normal = false;
+					cfg->aim.cannon.silent2 = true;
 				}
 
 				error_code = 9;
@@ -621,46 +651,47 @@ void render(ImDrawList* drawList)
 					if (attachObject && attachObject->isCannon()) break;
 
 					int localsets = 0;
+					const float weaponHudX = ImGui::GetIO().DisplaySize.x - 265.f;
 					if (cfg->aim.weapon.trigger)
 					{
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Instant Shoot", 0, 0.0f, 0);
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Instant Shoot", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX + 1.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Instant Shoot", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Instant Shoot", 0, 0.0f, 0);
 						localsets++;
 					}
 					if (cfg->aim.weapon.visibleOnly)
 					{
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Visible Only", 0, 0.0f, 0);
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Visible Only", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX + 1.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Visible Only", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Visible Only", 0, 0.0f, 0);
 						localsets++;
 					}
 					if (cfg->aim.weapon.players)
 					{
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Player Aimbot", 0, 0.0f, 0);
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Player Aimbot", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX + 1.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Player Aimbot", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Player Aimbot", 0, 0.0f, 0);
 						localsets++;
 					}
 					if (cfg->aim.weapon.skeletons)
 					{
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Skeletons Aimbot", 0, 0.0f, 0);
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Skeletons Aimbot", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX + 1.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Skeletons Aimbot", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Skeletons Aimbot", 0, 0.0f, 0);
 						localsets++;
 					}
 					if (cfg->aim.weapon.kegs)
 					{
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Kegs Aimbot", 0, 0.0f, 0);
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Kegs Aimbot", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX + 1.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Kegs Aimbot", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Kegs Aimbot", 0, 0.0f, 0);
 						localsets++;
 					}
 					if (cfg->aim.others.rage)
 					{
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Beta Aim", 0, 0.0f, 0);
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Beta Aim", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX + 1.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Beta Aim", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Beta Aim", 0, 0.0f, 0);
 						localsets++;
 					}
 					if (cfg->aim.weapon.fastweapon)
 					{
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1656.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Fast Reload", 0, 0.0f, 0);
-						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(1655.f, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Fast Reload", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX + 1.f, 303.f + (float)(localsets * 20)), ImColor(0, 0, 0, 255), "Fast Reload", 0, 0.0f, 0);
+						ImGui::GetWindowDrawList()->AddText(ImGui::GetFont(), 16, ImVec2(weaponHudX, 303.f + (float)(localsets * 20)), ImColor(255, 165, 0, 255), "Fast Reload", 0, 0.0f, 0);
 						localsets++;
 					}
 				} while (false);
@@ -689,7 +720,6 @@ void render(ImDrawList* drawList)
 			}
 			if (cfg->game.playerList) {
 				try {
-					ImGui::SetNextWindowSize(ImVec2(120.f, 300.f), ImGuiCond_Once);
 					ImGui::SetNextWindowPos(ImVec2(10.f, 180.f), ImGuiCond_Once);
 					ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
 					ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.1f, 0.1f, 0.1f, 0.5f));
@@ -769,9 +799,9 @@ void render(ImDrawList* drawList)
 								
 								ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.9f, 0.9f, 1.0f));
 
-								ImGui::SameLine(); 
+								ImGui::SameLine();
 
-								ImGui::Text(buf);
+								ImGui::Text("%s", buf);
 
 								ImGui::PopStyleColor();
 							}
@@ -1927,7 +1957,7 @@ void render(ImDrawList* drawList)
 					}
 					if (cfg->esp.others.enable)
 					{
-						if (cfg->esp.others.shipwrecks && (actor->isShipwreck() || actor->compareName("BP_Shipwreck_01_a_NetProxy_C")))
+						if (cfg->esp.others.shipwrecks && actor->isShipwreck() || cfg->esp.others.shipwrecks && actor->compareName("BP_Shipwreck_01_a_NetProxy_C"))
 						{
 							do
 							{
@@ -2072,7 +2102,61 @@ void render(ImDrawList* drawList)
 					{
 						ACharacter* tmpCharacter = actor;
 						error_code = 32;
+						if (cfg->aim.cannon.skeletonthrone && actor->isSkeletonThrone()) {
+							do
+							{
+								FVector tangentialvelocity;
+								tangentialvelocity = { 0.f,0.f,0.f };
+								if (auto const localShip = localPlayerActor->GetCurrentShip()) tangentialvelocity += localShip->ReplicatedMovement.LinearVelocity;
+								tangentialvelocity.Z = 0;
+								auto speed = FVector(tangentialvelocity.X, tangentialvelocity.Y, 0);
+								auto tangential_velocity = actor->ReplicatedMovement.LinearVelocity;
+								tangential_velocity.Z = 0;
+								auto linearVelocity = FVector(tangential_velocity.X, tangential_velocity.Y, 0);
+								FVector location = actor->K2_GetActorLocation();
+								if (cfg->aim.cannon.visibleOnly && !playerController->LineOfSightTo(actor, cameraLocation, false))
+								{
+									break;
+								}
+								if (location.DistTo(cameraLocation) > 55000)
+								{
+									break;
+								}
+								auto cannon = reinterpret_cast<ACannon*>(attachObject);
+								float gravity_scale = cannon->ProjectileGravityScale;
+								gravity_scale = 1.32f;
+								FRotator low, high;
+								if (cfg->aim.cannon.improvedVersion)
+								{
+									
 
+									auto angularVelocity = actor->ReplicatedMovement.AngularVelocity;
+									int i_solutions = AimAtShip(location, linearVelocity, angularVelocity, cameraLocation, speed, cannon->ProjectileSpeed, gravity_scale, low, high);
+									if (i_solutions < 1)
+										break;
+								}
+								else
+								{
+									int i_solutions = AimAtMovingTarget(location, linearVelocity, cannon->ProjectileSpeed, gravity_scale, cameraLocation, speed, low, high);
+									if (i_solutions < 1)
+										break;
+								}
+								low.Clamp();
+								low -= attachObject->K2_GetActorRotation();
+								low.Clamp();
+								float absPitch = abs(low.Pitch);
+								float absYaw = abs(low.Yaw);
+								if (absPitch > 100.f || absYaw > 100.f) { break; }
+								float sum = absYaw + absPitch;
+								if (sum < aimBest.best)
+								{
+									aimBest.target = actor;
+									aimBest.location = location;
+									aimBest.delta = low;
+									aimBest.best = sum;
+								}
+							} while (false);
+						}
 						if (cfg->aim.cannon.chains && actor->isShip())
 						{
 							error_code = 33;
@@ -2493,17 +2577,15 @@ void render(ImDrawList* drawList)
 							const float dist = myLocation.DistTo(location) * 0.01f;
 							FVector2D screen;
 
-							// check if actor is in any cooking pot
 							for (int i = 0; i < cookingPots.size(); i++)
 							{
 								if (location.DistTo(cookingPots[i]->K2_GetActorLocation()) < 1.f)
 								{
 									isInPot = true;
-									break;  // no need to continue checking if already in a pot
+									break;  
 								}
 							}
 
-							// render text if actor is in a pot and within distance range
 							if (isInPot && dist <= 150.f && dist >= 1.f)
 							{
 								if (playerController->ProjectWorldLocationToScreen(location, screen))
@@ -2575,6 +2657,37 @@ void render(ImDrawList* drawList)
 							drawList->AddLine({ pos.X, pos.Y }, { pos.X + (100.f * internal_water_percent), pos.Y }, 0xFF0000FF, 3);
 						}
 					}
+					if (cfg->game.id)
+					{
+                    if (cfg->game.OriginInteractDistance.X == FLT_MAX)
+                    {
+						cfg->game.OriginInteractDistance = localPlayerActor->InteractionComponent->BoxExtent;
+						localPlayerActor->InteractionComponent->BoxExtent = FVector(10000.f, 10000.f, 10000.f);
+                    }
+				    }
+				    else
+                    {
+                    if (cfg->game.OriginInteractDistance.X != FLT_MAX)
+                    {
+						localPlayerActor->InteractionComponent->BoxExtent = cfg->game.OriginInteractDistance;
+						cfg->game.OriginInteractDistance.X = FLT_MAX;
+                    }
+                    }
+
+					if (cfg->game.il && attachObject && attachObject->isLadder())
+					{
+						auto LocalPlayer = reinterpret_cast<AAthenaPlayerCharacter*>(localPlayerActor);
+						auto ClimbingComp = LocalPlayer->ClimbingComponent;
+						bool isLadder = attachObject && attachObject->isLadder();
+						if (isLadder){
+
+						if (GetAsyncKeyState(0x57))
+							ClimbingComp->ServerHeight = FLT_MAX;
+						else if (GetAsyncKeyState(0x53))
+							ClimbingComp->ServerHeight = 0.f;
+						}
+					}
+
 					if (cfg->game.showSunk)
 					{
 						do
@@ -2620,7 +2733,7 @@ void render(ImDrawList* drawList)
 			if (GetAsyncKeyState(VK_RBUTTON))
 			{
 
-				if (attachObject && attachObject->isCannon())
+				if (cfg->aim.cannon.normal && attachObject && attachObject->isCannon())
 				{
 					error_code = 44;
 					auto cannon = reinterpret_cast<ACannon*>(attachObject);
@@ -2920,7 +3033,6 @@ void RenderText(ImDrawList* drawList, const char* text, const FVector2D& pos, co
 
     float fSize = fontSize * cfg->dev.renderTextSizeFactor;
 
-    // combine the three AddText calls into one
     drawList->AddText(nullptr, fSize, ImVec2(ImScreen.x - 1.f, ImScreen.y - 1.f), ImGui::GetColorU32(IM_COL32_BLACK), text);
     drawList->AddText(nullptr, fSize, ImVec2(ImScreen.x + 1.f, ImScreen.y + 1.f), ImGui::GetColorU32(IM_COL32_BLACK), text);
     drawList->AddText(nullptr, fSize, ImScreen, ImGui::GetColorU32(color), text);
@@ -3179,6 +3291,471 @@ FVector pickHoleToAim(AHullDamage* damage, const FVector& localLoc)
 	return fLocation;
 }
 
+void hooked_postrender(UGameViewportClient* thisptr, UCanvas* canvas)
+{
+	if (updateGameVars())
+	{
+		auto const world = *UWorld::GWorld;
+		auto const gameState = world->GameState;
+		const auto myLocation = localPlayerActor->K2_GetActorLocation();
+		const auto camera = ((AController*)playerController)->PlayerCameraManager;
+		const auto cameraLocation = camera->GetCameraLocation();
+		const auto cameraRotation = camera->GetCameraRotation();
+		auto item = localPlayerActor->GetWieldedItem();
+
+		bool isWieldedWeapon = false;
+		bool isWieldedSpyglass = false;
+		if (item) isWieldedWeapon = item->isWeapon();
+		if (item) isWieldedSpyglass = item->isSpyglass();
+
+		const auto localSword = *reinterpret_cast<AMeleeWeapon**>(&item);
+		const auto localWeapon = *reinterpret_cast<AProjectileWeapon**>(&item);
+		ACharacter* attachObject = localPlayerActor->GetAttachParentActor();
+		static struct {
+			ACharacter* target = nullptr;
+			FVector location = FVector(0.f, 0.f, 0.f);
+			FRotator delta = FRotator(0.f, 0.f, 0.f);
+			float best = FLT_MAX;
+			float smoothness = 1.f;
+		} aimBest;
+
+		aimBest.target = nullptr;
+		aimBest.best = FLT_MAX;
+		TArray<ULevel*> levels = AthenaGameViewportClient->World->Levels;
+		for (UINT32 i = 0; i < levels.Count; i++)
+		{
+
+			if (!levels[i])
+				continue;
+			TArray<ACharacter*> actors = levels[i]->AActors;
+			for (UINT32 j = 0; j < actors.Count; j++)
+			{
+				ACharacter* actor = actors[j];
+				if (!actor)
+					continue;
+				if (attachObject && attachObject->isCannon() && cfg->aim.cannon.enable)
+				{
+					ACharacter* tmpCharacter = actor;
+
+					if (cfg->aim.cannon.skeletonthrone && actor->isSkeletonThrone()) {
+						do
+						{
+							FVector tangentialvelocity;
+							tangentialvelocity = { 0.f,0.f,0.f };
+							if (auto const localShip = localPlayerActor->GetCurrentShip()) tangentialvelocity += localShip->ReplicatedMovement.LinearVelocity;
+							tangentialvelocity.Z = 0;
+							auto speed = FVector(tangentialvelocity.X, tangentialvelocity.Y, 0);
+							auto tangential_velocity = actor->ReplicatedMovement.LinearVelocity;
+							tangential_velocity.Z = 0;
+							auto linearVelocity = FVector(tangential_velocity.X, tangential_velocity.Y, 0);
+							FVector location = actor->K2_GetActorLocation();
+							if (cfg->aim.cannon.visibleOnly && !playerController->LineOfSightTo(actor, cameraLocation, false))
+							{
+								break;
+							}
+							if (location.DistTo(cameraLocation) > 55000)
+							{
+								break;
+							}
+							auto cannon = reinterpret_cast<ACannon*>(attachObject);
+							float gravity_scale = cannon->ProjectileGravityScale;
+							gravity_scale = 1.32f;
+							FRotator low, high;
+							if (cfg->aim.cannon.improvedVersion)
+							{
+
+
+								auto angularVelocity = actor->ReplicatedMovement.AngularVelocity;
+								int i_solutions = AimAtShip(location, linearVelocity, angularVelocity, cameraLocation, speed, cannon->ProjectileSpeed, gravity_scale, low, high);
+								if (i_solutions < 1)
+									break;
+							}
+							else
+							{
+								int i_solutions = AimAtMovingTarget(location, linearVelocity, cannon->ProjectileSpeed, gravity_scale, cameraLocation, speed, low, high);
+								if (i_solutions < 1)
+									break;
+							}
+							low.Clamp();
+							low -= attachObject->K2_GetActorRotation();
+							low.Clamp();
+							float absPitch = abs(low.Pitch);
+							float absYaw = abs(low.Yaw);
+							if (absPitch > 100.f || absYaw > 100.f) { break; }
+							float sum = absYaw + absPitch;
+							if (sum < aimBest.best)
+							{
+								aimBest.target = actor;
+								aimBest.location = location;
+								aimBest.delta = low;
+								aimBest.best = sum;
+							}
+						} while (false);
+					}
+					if (cfg->aim.cannon.chains && actor->isShip())
+					{
+
+						do
+						{
+							if (actor == localPlayerActor->GetCurrentShip())
+							{
+								break;
+							}
+							FVector location = actor->K2_GetActorLocation();
+							if (cfg->aim.cannon.visibleOnly && !playerController->LineOfSightTo(actor, cameraLocation, false))
+							{
+								break;
+							}
+							if (location.DistTo(cameraLocation) > 55000)
+							{
+								break;
+							}
+							int amount = 0;
+							auto water = actor->GetInternalWater();
+							amount = water->GetNormalizedWaterAmount() * 100.f;
+							if (amount == 100)
+								break;
+							auto cannon = reinterpret_cast<ACannon*>(attachObject);
+							float gravity_scale = cannon->ProjectileGravityScale;
+							const FVector forward = actor->GetActorForwardVector();
+							const FVector up = actor->GetActorUpVector();
+							const FVector loc = actor->K2_GetActorLocation();
+							FVector loc_mast = loc;
+							loc_mast += forward * 80.f;
+							loc_mast += up * 1300.f;
+							location = loc_mast;
+							gravity_scale = 1.f;
+							FRotator low, high;
+							if (cfg->aim.cannon.improvedVersion)
+							{
+								auto angularVelocity = actor->ReplicatedMovement.AngularVelocity;
+								int i_solutions = AimAtShip(location, actor->GetVelocity(), angularVelocity, cameraLocation, attachObject->GetVelocity(), cannon->ProjectileSpeed, gravity_scale, low, high);
+								if (i_solutions < 1)
+									break;
+							}
+							else
+							{
+								int i_solutions = AimAtMovingTarget(location, actor->GetVelocity(), cannon->ProjectileSpeed, gravity_scale, cameraLocation, attachObject->GetVelocity(), low, high);
+								if (i_solutions < 1)
+									break;
+							}
+							low.Clamp();
+							low -= attachObject->K2_GetActorRotation();
+							low.Clamp();
+							float absPitch = abs(low.Pitch);
+							float absYaw = abs(low.Yaw);
+							if (absPitch > cfg->aim.cannon.fPitch || absYaw > cfg->aim.cannon.fYaw) { break; }
+							float sum = absYaw + absPitch;
+							if (sum < aimBest.best)
+							{
+								aimBest.target = actor;
+								aimBest.location = location;
+								aimBest.delta = low;
+								aimBest.best = sum;
+							}
+						} while (false);
+					}
+					if (cfg->aim.cannon.players && cfg->aim.cannon.chains == false && actor->isPlayer() && actor != localPlayerActor && !actor->IsDead())
+					{
+
+						do
+						{
+							if (UCrewFunctions::AreCharactersInSameCrew(actor, localPlayerActor)) break;
+							FVector location = actor->K2_GetActorLocation();
+							if (location.DistTo(cameraLocation) > 55000)
+							{
+								break;
+							}
+							auto cannon = reinterpret_cast<ACannon*>(attachObject);
+							float gravity_scale = cannon->ProjectileGravityScale;
+							FRotator low, high;
+							FVector acVelocity = actor->GetVelocity();
+							FVector acFVelocity = actor->GetForwardVelocity();
+							int i_solutions = AimAtMovingTarget(location, actor->GetVelocity(), cannon->ProjectileSpeed, gravity_scale, cameraLocation, attachObject->GetVelocity(), low, high);
+							if (i_solutions < 1)
+								break;
+							low.Clamp();
+							low -= attachObject->K2_GetActorRotation();
+							low.Clamp();
+							float absPitch = abs(low.Pitch);
+							float absYaw = abs(low.Yaw);
+							if (absPitch > cfg->aim.cannon.fPitch || absYaw > cfg->aim.cannon.fYaw) { break; }
+							float sum = absYaw + absPitch;
+							if (sum < aimBest.best)
+							{
+								aimBest.target = actor;
+								aimBest.location = location;
+								aimBest.delta = low;
+								aimBest.best = sum;
+							}
+						} while (false);
+					}
+					if (cfg->aim.cannon.skeletons && cfg->aim.cannon.chains == false && actor->isSkeleton() && actor != localPlayerActor && !actor->IsDead())
+					{
+
+						do
+						{
+							FVector location = actor->K2_GetActorLocation();
+							if (location.DistTo(cameraLocation) > 55000)
+							{
+								break;
+							}
+							auto cannon = reinterpret_cast<ACannon*>(attachObject);
+							float gravity_scale = cannon->ProjectileGravityScale;
+							FRotator low, high;
+							int i_solutions = AimAtMovingTarget(location, actor->GetVelocity(), cannon->ProjectileSpeed, gravity_scale, cameraLocation, attachObject->GetVelocity(), low, high);
+							if (i_solutions < 1)
+								break;
+							low.Clamp();
+							low -= attachObject->K2_GetActorRotation();
+							low.Clamp();
+							float absPitch = abs(low.Pitch);
+							float absYaw = abs(low.Yaw);
+							if (absPitch > cfg->aim.cannon.fPitch || absYaw > cfg->aim.cannon.fYaw) { break; }
+							float sum = absYaw + absPitch;
+							if (sum < aimBest.best)
+							{
+								aimBest.target = actor;
+								aimBest.location = location;
+								aimBest.delta = low;
+								aimBest.best = sum;
+							}
+
+						} while (false);
+					}
+					if (cfg->aim.cannon.chains == false && actor->isShip())
+					{
+
+						do
+						{
+							if (actor == localPlayerActor->GetCurrentShip())
+							{
+								break;
+							}
+							FVector location = actor->K2_GetActorLocation();
+							if (cfg->aim.cannon.visibleOnly && !playerController->LineOfSightTo(actor, cameraLocation, false))
+							{
+								break;
+							}
+							if (location.DistTo(cameraLocation) > 55000)
+							{
+								break;
+							}
+							auto cannon = reinterpret_cast<ACannon*>(attachObject);
+							int amount = 0;
+							auto water = actor->GetInternalWater();
+							amount = water->GetNormalizedWaterAmount() * 100.f;
+							if (amount == 100)
+								break;
+							float gravity_scale = cannon->ProjectileGravityScale;
+							if (cfg->aim.cannon.deckshots)
+							{
+								const FVector forward = actor->GetActorForwardVector();
+								const FVector up = actor->GetActorUpVector();
+								const FVector loc = actor->K2_GetActorLocation();
+								FVector loc_mast = loc;
+								loc_mast += forward * 52.f;
+								loc_mast += up * 275.f;
+								location = loc_mast;
+								gravity_scale = 1.30f;
+							}
+							else if (cfg->aim.cannon.lowAim)
+							{
+								auto const damage = actor->GetHullDamage();
+								if (damage)
+								{
+									FVector loc = pickHoleToAim(damage, myLocation);
+									if (loc.Sum() != 9999.f)
+										location = loc;
+								}
+							}
+							FRotator low, high;
+
+							if (cfg->aim.cannon.improvedVersion)
+							{
+								auto angularVelocity = actor->ReplicatedMovement.AngularVelocity;
+								int i_solutions = AimAtShip(location, actor->GetVelocity(), angularVelocity, cameraLocation, attachObject->GetVelocity(), cannon->ProjectileSpeed, gravity_scale, low, high);
+								if (i_solutions < 1)
+									break;
+							}
+							else
+							{
+								int i_solutions = AimAtMovingTarget(location, actor->GetVelocity(), cannon->ProjectileSpeed, gravity_scale, cameraLocation, attachObject->GetVelocity(), low, high);
+								if (i_solutions < 1)
+									break;
+							}
+
+
+							low.Clamp();
+							low -= attachObject->K2_GetActorRotation();
+							low.Clamp();
+							float absPitch = abs(low.Pitch);
+							float absYaw = abs(low.Yaw);
+							if (absPitch > cfg->aim.cannon.fPitch || absYaw > cfg->aim.cannon.fYaw) { break; }
+							float sum = absYaw + absPitch;
+							if (sum < aimBest.best)
+							{
+								aimBest.target = actor;
+								aimBest.location = location;
+								aimBest.delta = low;
+								aimBest.best = sum;
+							}
+						} while (false);
+					}
+					if (cfg->aim.cannon.ghostShips && cfg->aim.cannon.chains == false && actor->isGhostShip())
+					{
+
+						do
+						{
+							FVector location = actor->K2_GetActorLocation();
+							auto ship = reinterpret_cast<AAggressiveGhostShip*>(actor);
+							if (cfg->aim.cannon.visibleOnly && !playerController->LineOfSightTo(actor, cameraLocation, false))
+							{
+								break;
+							}
+							if (myLocation.DistTo(location) > 55000)
+							{
+								break;
+							}
+							if (actor == localPlayerActor->GetCurrentShip())
+							{
+								break;
+							}
+							if (ship->NumShotsLeftToKill < 1)
+							{
+								break;
+							}
+							auto cannon = reinterpret_cast<ACannon*>(attachObject);
+							float gravity_scale = cannon->ProjectileGravityScale;
+							auto forward = actor->GetActorForwardVector();
+							forward *= ship->ShipState.ShipSpeed;
+							FRotator low, high;
+							if (cfg->aim.cannon.improvedVersion)
+							{
+								auto angularVelocity = actor->ReplicatedMovement.AngularVelocity;
+								int i_solutions = AimAtShip(location, forward, angularVelocity, cameraLocation, attachObject->GetVelocity(), cannon->ProjectileSpeed, gravity_scale, low, high);
+								if (i_solutions < 1)
+									break;
+							}
+							else
+							{
+								int i_solutions = AimAtMovingTarget(location, forward, cannon->ProjectileSpeed, gravity_scale, cameraLocation, attachObject->GetVelocity(), low, high);
+								if (i_solutions < 1)
+									break;
+							}
+
+							low.Clamp();
+							low -= attachObject->K2_GetActorRotation();
+							low.Clamp();
+							float absPitch = abs(low.Pitch);
+							float absYaw = abs(low.Yaw);
+							if (absPitch > cfg->aim.cannon.fPitch || absYaw > cfg->aim.cannon.fYaw) { break; }
+							float sum = absYaw + absPitch;
+							if (sum < aimBest.best)
+							{
+								aimBest.target = actor;
+								aimBest.location = location;
+								aimBest.delta = low;
+								aimBest.best = sum;
+							}
+						} while (false);
+					}
+					actor = tmpCharacter;
+				}
+			}
+
+		}
+		if (aimBest.target != nullptr)
+		{
+
+
+			FVector2D screen;
+			if (playerController->ProjectWorldLocationToScreen(aimBest.location, screen))
+			{
+			}
+			static std::uintptr_t shotDesiredTime = 0;
+			static std::uintptr_t desiredTime = 0;
+			if (true)
+			{
+				if (cfg->aim.cannon.silent2 && attachObject && attachObject->isCannon())
+				{
+
+					auto cannon = reinterpret_cast<ACannon*>(attachObject);
+					if (cannon)
+					{
+						if (((aimBest.delta.Pitch > cannon->PitchRange.max) || (aimBest.delta.Pitch < cannon->PitchRange.min)) || ((aimBest.delta.Yaw > cannon->YawRange.max) || (aimBest.delta.Yaw < cannon->YawRange.min)))
+						{
+						}
+						else
+						{
+							cannon->Server_RequestAim(aimBest.delta.Pitch, aimBest.delta.Yaw);
+						}
+					}
+				}
+			}
+		}
+
+	}
+	return original_postrender(thisptr, canvas);
+}
+
+
+static bool SwapVTableSlot(DWORD64** slot, DWORD64* newValue, DWORD64** outOriginal)
+{
+	if (!slot)
+		return false;
+
+	DWORD oldProtect = 0;
+	if (!VirtualProtect(slot, sizeof(DWORD64*), PAGE_READWRITE, &oldProtect))
+		return false;
+
+	*outOriginal = *slot;
+	*slot = newValue;
+
+	DWORD ignored = 0;
+	VirtualProtect(slot, sizeof(DWORD64*), oldProtect, &ignored);
+	return true;
+}
+
+static DWORD64** g_PostRenderVTableSlot = nullptr;
+
+void HookPostRender()
+{
+	if (FName::GNames)
+	{
+		engine::original_postrender = nullptr;
+		g_PostRenderVTableSlot = nullptr;
+
+		if (AthenaGameViewportClient)
+		{
+			DWORD64** PostRender = *(DWORD64***)(AthenaGameViewportClient)+100;
+
+			DWORD64* original = nullptr;
+			if (!SwapVTableSlot(PostRender, (DWORD64*)hooked_postrender, &original))
+			{
+				tslog::critical("PostRender vtable hook failed: VirtualProtect error 0x%x target=%p", GetLastError(), PostRender);
+				return;
+			}
+
+			engine::original_postrender = (tPostRender)original;
+			g_PostRenderVTableSlot = PostRender;
+			tslog::log("PostRender vtable hook enabled: slot=%p original=%p detour=%p", PostRender, engine::original_postrender, hooked_postrender);
+		}
+	}
+}
+
+void UnHookPostRender()
+{
+	if (g_PostRenderVTableSlot && engine::original_postrender)
+	{
+		DWORD64* discard = nullptr;
+		SwapVTableSlot(g_PostRenderVTableSlot, (DWORD64*)engine::original_postrender, &discard);
+		g_PostRenderVTableSlot = nullptr;
+		engine::original_postrender = nullptr;
+	}
+}
+
+
 
 void processhk(void* Object, UFunction* Function, void* Params)
 {
@@ -3206,43 +3783,69 @@ void processhk(void* Object, UFunction* Function, void* Params)
 	return oProcessEvent(Object, Function, Params);
 }
 
+static DWORD64** g_ProcessEventVTableSlot = nullptr;
+
 void hookProcessEvent()
 {
 	engine::oProcessEvent = nullptr;
+	g_ProcessEventVTableSlot = nullptr;
 
 	if (AthenaGameViewportClient)
 	{
 		DWORD64** ProcessEvent = *(DWORD64***)(AthenaGameViewportClient)+55;
 
-		if (MH_CreateHook(reinterpret_cast<LPVOID>(*ProcessEvent), processhk, reinterpret_cast<LPVOID*>(&engine::oProcessEvent)) != MH_OK)
+		DWORD64* original = nullptr;
+		if (!SwapVTableSlot(ProcessEvent, (DWORD64*)processhk, &original))
 		{
-
+			tslog::critical("ProcessEvent vtable hook failed: VirtualProtect error 0x%x target=%p", GetLastError(), ProcessEvent);
 			return;
 		}
 
-		if (MH_EnableHook(reinterpret_cast<LPVOID>(*ProcessEvent)) != MH_OK)
-		{
-
-			MH_RemoveHook(reinterpret_cast<LPVOID>(*ProcessEvent));
-			return;
-		}
+		engine::oProcessEvent = (fnProcessEvent)original;
+		g_ProcessEventVTableSlot = ProcessEvent;
+		tslog::log("ProcessEvent vtable hook enabled: slot=%p original=%p detour=%p", ProcessEvent, engine::oProcessEvent, processhk);
 	}
 }
 void unhookProcessEvent()
 {
-	if (engine::oProcessEvent)
+	if (g_ProcessEventVTableSlot && engine::oProcessEvent)
 	{
-
-		if (MH_DisableHook(reinterpret_cast<LPVOID>(engine::oProcessEvent)) == MH_OK &&
-			MH_RemoveHook(reinterpret_cast<LPVOID>(engine::oProcessEvent)) == MH_OK)
-		{
-			engine::oProcessEvent = nullptr;
-		}
+		DWORD64* discard = nullptr;
+		SwapVTableSlot(g_ProcessEventVTableSlot, (DWORD64*)engine::oProcessEvent, &discard);
+		g_ProcessEventVTableSlot = nullptr;
+		engine::oProcessEvent = nullptr;
 	}
 }
 void EngineShutdown()
 {
 	unhookProcessEvent();
+	UnHookPostRender();
+}
+
+void SetGameInputBlocked(bool blocked)
+{
+	if (playerController)
+	{
+		if (blocked)
+		{
+			playerController->SetIgnoreMoveInput(true);
+			playerController->SetIgnoreLookInput(true);
+		}
+		else
+		{
+
+			playerController->ResetIgnoreMoveInput();
+			playerController->ResetIgnoreLookInput();
+		}
+
+		playerController->bShowMouseCursor = blocked;
+		playerController->bEnableClickEvents = blocked;
+	}
+
+	if (localPlayerActor)
+	{
+		localPlayerActor->bBlockInput = blocked;
+	}
 }
 
 
@@ -3626,6 +4229,8 @@ std::string getShortName(std::string name)
 {
 	if (name.find("cannon_ball") != std::string::npos)
 		return "Cannon";
+	if (name.find("cannonball_grapeshot") != std::string::npos)
+		return "Scattershot";
 	if (name.find("cannonball_chain_shot") != std::string::npos)
 		return "Chain";
 	if (name.find("cannonball_Grenade") != std::string::npos)
@@ -3655,6 +4260,10 @@ std::string getShortName(std::string name)
 	if (name.find("cannonball_cur_rudder") != std::string::npos)
 		return "Helm";
 
+	if (name.find("BP_Trap_01_a_ItemDesc_C") != std::string::npos)
+		return "Trap";
+	if (name.find("BP_fod_DragonfruitRaw_00_a_ItemDesc_C") != std::string::npos)
+		return "DragonFruit";
 	if (name.find("repair_wood") != std::string::npos)
 		return "Wood";
 	if (name.find("PomegranateFresh") != std::string::npos)

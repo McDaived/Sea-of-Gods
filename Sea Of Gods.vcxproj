@@ -49,7 +49,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -88,8 +88,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(WindowsSDK_IncludePath);$(VC_IncludePath);$(SolutionDir)\library\Microsoft DirectX SDK\Include;$(SolutionDir)\library\minhook\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\library\Microsoft DirectX SDK\Lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(DXSDK_DIR)Include;$(ProjectDir)include;$</IncludePath>
+    <LibraryPath>$(ProjectDir)lib;$(DXSDK_DIR)Lib\x64;$(LibraryPath)</LibraryPath>
+    <IntDir>$(ShortProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -146,30 +147,37 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <ExceptionHandling>Async</ExceptionHandling>
-      <CallingConvention>Cdecl</CallingConvention>
+      <CallingConvention>
+      </CallingConvention>
       <DebugInformationFormat>None</DebugInformationFormat>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <StringPooling>true</StringPooling>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <StringPooling>false</StringPooling>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/Zc:threadSafeInit- /Zc:char8_t- </AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <OmitFramePointers>false</OmitFramePointers>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>
@@ -193,6 +201,9 @@
     <ClCompile Include="library\tslib\tslib.cpp" />
     <ClCompile Include="library\ue4\Transform.cpp" />
     <ClCompile Include="library\ue4\UE4.cpp" />
+    <ClCompile Include="library\ui\blur_dx11.cpp" />
+    <ClCompile Include="library\ui\texture_dx11.cpp" />
+    <ClCompile Include="library\ui\ui.cpp" />
     <ClCompile Include="main\main.cpp" />
     <ClCompile Include="sdk\SDK.cpp" />
     <ClCompile Include="utils\engine.cpp" />
@@ -217,6 +228,7 @@
     <ClInclude Include="library\minhook\src\hde\table32.h" />
     <ClInclude Include="library\minhook\src\hde\table64.h" />
     <ClInclude Include="library\minhook\src\trampoline.h" />
+    <ClInclude Include="library\stb\stb_image.h" />
     <ClInclude Include="library\tslib\tslib.h" />
     <ClInclude Include="library\ue4\Array.h" />
     <ClInclude Include="library\ue4\Color.h" />
@@ -229,6 +241,11 @@
     <ClInclude Include="library\ue4\Vector.h" />
     <ClInclude Include="library\ue4\Vector2D.h" />
     <ClInclude Include="library\ue4\Vector4.h" />
+    <ClInclude Include="library\ui\animations.hpp" />
+    <ClInclude Include="library\ui\blur_dx11.hpp" />
+    <ClInclude Include="library\ui\fonts.hpp" />
+    <ClInclude Include="library\ui\texture_dx11.hpp" />
+    <ClInclude Include="library\ui\ui.hpp" />
     <ClInclude Include="main\main.h" />
     <ClInclude Include="sdk\SDK.h" />
     <ClInclude Include="utils\cIcons.h" />

@@ -28,7 +28,7 @@
 
 //---- Don't define obsolete functions/enums/behaviors. Consider enabling from time to time after updating to clean your code of obsolete function/names.
 //#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS
-//#define IMGUI_DISABLE_OBSOLETE_KEYIO                      // 1.87+ disable legacy io.KeyMap[]+io.KeysDown[] in favor io.AddKeyEvent(). This is automatically done by IMGUI_DISABLE_OBSOLETE_FUNCTIONS.
+//#define IMGUI_DISABLE_OBSOLETE_KEYIO                      // 1.87: disable legacy io.KeyMap[]+io.KeysDown[] in favor io.AddKeyEvent(). This will be folded into IMGUI_DISABLE_OBSOLETE_FUNCTIONS in a few versions.
 
 //---- Disable all of Dear ImGui or don't implement standard windows/tools.
 // It is very strongly recommended to NOT disable the demo windows and debug tool during development. They are extremely useful in day to day work. Please read comments in imgui_demo.cpp.
@@ -72,15 +72,9 @@
 //#define IMGUI_USE_STB_SPRINTF
 
 //---- Use FreeType to build and rasterize the font atlas (instead of stb_truetype which is embedded by default in Dear ImGui)
-// Requires FreeType headers to be available in the include path. Requires program to be compiled with 'misc/freetype/imgui_freetype.cpp' (in this repository) + the FreeType library (not provided).
-// On Windows you may use vcpkg with 'vcpkg install freetype --triplet=x64-windows' + 'vcpkg integrate install'.
+// Requires FreeType headers to be available in the include path, program to be compiled with 'misc/freetype/imgui_freetype.cpp' + the FreeType library linked in.
+// NOT enabled here: this project doesn't vendor/link FreeType, and stb_truetype (already embedded) is sufficient for the menu's fonts.
 //#define IMGUI_ENABLE_FREETYPE
-
-//---- Use FreeType+lunasvg library to render OpenType SVG fonts (SVGinOT)
-// Requires lunasvg headers to be available in the include path + program to be linked with the lunasvg library (not provided).
-// Only works in combination with IMGUI_ENABLE_FREETYPE.
-// (implementation is based on Freetype's rsvg-port.c which is licensed under CeCILL-C Free Software License Agreement)
-//#define IMGUI_ENABLE_FREETYPE_LUNASVG
 
 //---- Use stb_truetype to build and rasterize the font atlas (default)
 // The only purpose of this define is if you want force compilation of the stb_truetype backend ALONG with the FreeType backend.
@@ -98,7 +92,7 @@
         operator MyVec4() const { return MyVec4(x,y,z,w); }
 */
 //---- ...Or use Dear ImGui's own very basic math operators.
-//#define IMGUI_DEFINE_MATH_OPERATORS
+#define IMGUI_DEFINE_MATH_OPERATORS
 
 //---- Use 32-bit vertex indices (default is 16-bit) is one way to allow large meshes with more than 64K vertices.
 // Your renderer backend will need to support it (most example renderer backends support both 16/32-bit indices).
@@ -127,3 +121,10 @@ namespace ImGui
     void MyFunction(const char* name, MyMatrix44* mtx);
 }
 */
+
+// NOTE: the "weave" fork this menu's widgets were ported from defines its Hotkey-picker key names
+// (BACK/DELETE/INSERT/HOME/END/etc, plus a global KeyNames[] array) right here in imconfig.h as bare
+// #defines. Since imconfig.h is pulled in by imgui.h, which is included practically everywhere in this
+// project, those single-word macros would collide with existing identifiers (e.g. main.h's `end()`,
+// SDK/UE4 enum members, etc). The key-name table for ImGui::Hotkey() is instead kept as a local,
+// bounds-checked static array inside imgui_widgets.cpp, and uses the real VK_* constants directly.

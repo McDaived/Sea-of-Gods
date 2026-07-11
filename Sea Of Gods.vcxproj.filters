@@ -40,6 +40,12 @@
     <Filter Include="fonts">
       <UniqueIdentifier>{03c26132-b894-4bcb-bb5c-26d0811730da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="library\ui">
+      <UniqueIdentifier>{7e6d3a2c-0b9f-4c2e-9a1d-5f8b6c4e2d31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="library\stb">
+      <UniqueIdentifier>{1a9c4e5b-2d7f-4a3c-8e6b-9f0d1c2a3b4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="library\ImGui\imgui.cpp">
@@ -95,6 +101,15 @@
     </ClCompile>
     <ClCompile Include="library\minhook\src\hde\hde64.c">
       <Filter>library\minhook\src\hde</Filter>
+    </ClCompile>
+    <ClCompile Include="library\ui\ui.cpp">
+      <Filter>library\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="library\ui\blur_dx11.cpp">
+      <Filter>library\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="library\ui\texture_dx11.cpp">
+      <Filter>library\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +220,24 @@
     </ClInclude>
     <ClInclude Include="library\minhook\Global.h">
       <Filter>library\minhook</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ui\ui.hpp">
+      <Filter>library\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ui\animations.hpp">
+      <Filter>library\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ui\blur_dx11.hpp">
+      <Filter>library\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ui\texture_dx11.hpp">
+      <Filter>library\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ui\fonts.hpp">
+      <Filter>library\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_image.h">
+      <Filter>library\stb</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-// dear imgui, v1.90.1 WIP
+// dear imgui, v1.90 WIP
 // (drawing and font code)
 
 /*
@@ -34,7 +34,7 @@ Index of this file:
 #ifndef IMGUI_DISABLE
 #include "imgui_internal.h"
 #ifdef IMGUI_ENABLE_FREETYPE
-#include "misc/freetype/imgui_freetype.h"
+#include "imgui_freetype.h"
 #endif
 
 #include <stdio.h>      // vsnprintf, sscanf, printf
@@ -176,31 +176,32 @@ void ImGui::StyleColorsDark(ImGuiStyle* dst)
     ImGuiStyle* style = dst ? dst : &ImGui::GetStyle();
     ImVec4* colors = style->Colors;
 
-    colors[ImGuiCol_Text]                   = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
-    colors[ImGuiCol_TextDisabled]           = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
-    colors[ImGuiCol_WindowBg]               = ImVec4(0.06f, 0.06f, 0.06f, 0.94f);
-    colors[ImGuiCol_ChildBg]                = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-    colors[ImGuiCol_PopupBg]                = ImVec4(0.08f, 0.08f, 0.08f, 0.94f);
-    colors[ImGuiCol_Border]                 = ImVec4(0.43f, 0.43f, 0.50f, 0.50f);
-    colors[ImGuiCol_BorderShadow]           = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-    colors[ImGuiCol_FrameBg]                = ImVec4(0.16f, 0.29f, 0.48f, 0.54f);
-    colors[ImGuiCol_FrameBgHovered]         = ImVec4(0.26f, 0.59f, 0.98f, 0.40f);
-    colors[ImGuiCol_FrameBgActive]          = ImVec4(0.26f, 0.59f, 0.98f, 0.67f);
+    colors[ImGuiCol_Scheme]                 = ImColor( 215, 96, 20 );
+    colors[ImGuiCol_Text]                   = ImColor( 255, 255, 255 );
+    colors[ImGuiCol_TextDisabled]           = ImColor( 100, 100, 100 );
+    colors[ImGuiCol_WindowBg]               = ImColor( 16, 16, 16 );
+    colors[ImGuiCol_ChildBg]                = ImColor( 20, 20, 20 );
+    colors[ImGuiCol_PopupBg]                = ImColor( 31, 31, 31 );
+    colors[ImGuiCol_Border]                 = ImColor( 255, 255, 255, 15 );
+    colors[ImGuiCol_BorderShadow]           = ImColor( 255, 255, 255, 25 );
+    colors[ImGuiCol_FrameBg]                = ImColor( 16, 16, 16 );
+    colors[ImGuiCol_FrameBgHovered]         = ImColor( 21, 21, 21 );
+    colors[ImGuiCol_FrameBgActive]          = ImColor( 26, 26, 26 );
     colors[ImGuiCol_TitleBg]                = ImVec4(0.04f, 0.04f, 0.04f, 1.00f);
     colors[ImGuiCol_TitleBgActive]          = ImVec4(0.16f, 0.29f, 0.48f, 1.00f);
     colors[ImGuiCol_TitleBgCollapsed]       = ImVec4(0.00f, 0.00f, 0.00f, 0.51f);
     colors[ImGuiCol_MenuBarBg]              = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
-    colors[ImGuiCol_ScrollbarBg]            = ImVec4(0.02f, 0.02f, 0.02f, 0.53f);
-    colors[ImGuiCol_ScrollbarGrab]          = ImVec4(0.31f, 0.31f, 0.31f, 1.00f);
-    colors[ImGuiCol_ScrollbarGrabHovered]   = ImVec4(0.41f, 0.41f, 0.41f, 1.00f);
-    colors[ImGuiCol_ScrollbarGrabActive]    = ImVec4(0.51f, 0.51f, 0.51f, 1.00f);
+    colors[ImGuiCol_ScrollbarBg]            = ImColor( 0, 0, 0, 0 );
+    colors[ImGuiCol_ScrollbarGrab]          = ImColor( 28, 28, 28 );
+    colors[ImGuiCol_ScrollbarGrabHovered]   = ImColor( 33, 33, 33 );
+    colors[ImGuiCol_ScrollbarGrabActive]    = ImColor( 38, 38, 38 );
     colors[ImGuiCol_CheckMark]              = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
     colors[ImGuiCol_SliderGrab]             = ImVec4(0.24f, 0.52f, 0.88f, 1.00f);
     colors[ImGuiCol_SliderGrabActive]       = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
-    colors[ImGuiCol_Button]                 = ImVec4(0.26f, 0.59f, 0.98f, 0.40f);
-    colors[ImGuiCol_ButtonHovered]          = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
-    colors[ImGuiCol_ButtonActive]           = ImVec4(0.06f, 0.53f, 0.98f, 1.00f);
-    colors[ImGuiCol_Header]                 = ImVec4(0.26f, 0.59f, 0.98f, 0.31f);
+    colors[ImGuiCol_Button]                 = ImColor( 26, 26, 26 );
+    colors[ImGuiCol_ButtonHovered]          = ImColor( 31, 31, 31 );
+    colors[ImGuiCol_ButtonActive]           = ImColor( 36, 36, 36 );
+    colors[ImGuiCol_Header]                 = ImColor( 26, 26, 26 );
     colors[ImGuiCol_HeaderHovered]          = ImVec4(0.26f, 0.59f, 0.98f, 0.80f);
     colors[ImGuiCol_HeaderActive]           = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
     colors[ImGuiCol_Separator]              = colors[ImGuiCol_Border];
@@ -223,7 +224,7 @@ void ImGui::StyleColorsDark(ImGuiStyle* dst)
     colors[ImGuiCol_TableBorderLight]       = ImVec4(0.23f, 0.23f, 0.25f, 1.00f);   // Prefer using Alpha=1.0 here
     colors[ImGuiCol_TableRowBg]             = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
     colors[ImGuiCol_TableRowBgAlt]          = ImVec4(1.00f, 1.00f, 1.00f, 0.06f);
-    colors[ImGuiCol_TextSelectedBg]         = ImVec4(0.26f, 0.59f, 0.98f, 0.35f);
+    colors[ImGuiCol_TextSelectedBg]         = ImColor( 215, 96, 20, 120 );
     colors[ImGuiCol_DragDropTarget]         = ImVec4(1.00f, 1.00f, 0.00f, 0.90f);
     colors[ImGuiCol_NavHighlight]           = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
     colors[ImGuiCol_NavWindowingHighlight]  = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
@@ -386,9 +387,9 @@ void ImDrawListSharedData::SetCircleTessellationMaxError(float max_error)
 void ImDrawList::_ResetForNewFrame()
 {
     // Verify that the ImDrawCmd fields we want to memcmp() are contiguous in memory.
-    IM_STATIC_ASSERT(offsetof(ImDrawCmd, ClipRect) == 0);
-    IM_STATIC_ASSERT(offsetof(ImDrawCmd, TextureId) == sizeof(ImVec4));
-    IM_STATIC_ASSERT(offsetof(ImDrawCmd, VtxOffset) == sizeof(ImVec4) + sizeof(ImTextureID));
+    IM_STATIC_ASSERT(IM_OFFSETOF(ImDrawCmd, ClipRect) == 0);
+    IM_STATIC_ASSERT(IM_OFFSETOF(ImDrawCmd, TextureId) == sizeof(ImVec4));
+    IM_STATIC_ASSERT(IM_OFFSETOF(ImDrawCmd, VtxOffset) == sizeof(ImVec4) + sizeof(ImTextureID));
     if (_Splitter._Count > 1)
         _Splitter.Merge(this);
 
@@ -475,7 +476,7 @@ void ImDrawList::AddCallback(ImDrawCallback callback, void* callback_data)
 }
 
 // Compare ClipRect, TextureId and VtxOffset with a single memcmp()
-#define ImDrawCmd_HeaderSize                            (offsetof(ImDrawCmd, VtxOffset) + sizeof(unsigned int))
+#define ImDrawCmd_HeaderSize                            (IM_OFFSETOF(ImDrawCmd, VtxOffset) + sizeof(unsigned int))
 #define ImDrawCmd_HeaderCompare(CMD_LHS, CMD_RHS)       (memcmp(CMD_LHS, CMD_RHS, ImDrawCmd_HeaderSize))    // Compare ClipRect, TextureId, VtxOffset
 #define ImDrawCmd_HeaderCopy(CMD_DST, CMD_SRC)          (memcpy(CMD_DST, CMD_SRC, ImDrawCmd_HeaderSize))    // Copy ClipRect, TextureId, VtxOffset
 #define ImDrawCmd_AreSequentialIdxOffset(CMD_0, CMD_1)  (CMD_0->IdxOffset + CMD_0->ElemCount == CMD_1->IdxOffset)
@@ -1439,6 +1440,48 @@ void ImDrawList::AddRectFilledMultiColor(const ImVec2& p_min, const ImVec2& p_ma
     PrimWriteVtx(ImVec2(p_min.x, p_max.y), uv, col_bot_left);
 }
 
+void ImDrawList::AddRectFilledMultiColorRounded(const ImVec2& p_min, const ImVec2& p_max, ImU32 bg_color, ImU32 col_upr_left, ImU32 col_upr_right, ImU32 col_bot_right, ImU32 col_bot_left, float rounding, ImDrawFlags rounding_corners)
+{
+    rounding = ImMin(rounding, ImFabs(p_max.x - p_min.x) * (((rounding_corners & ImDrawFlags_RoundCornersTop) == ImDrawFlags_RoundCornersTop) || ((rounding_corners & ImDrawFlags_RoundCornersBottom) == ImDrawFlags_RoundCornersBottom) ? 0.5f : 1.0f) - 1.0f);
+    rounding = ImMin(rounding, ImFabs(p_max.y - p_min.y) * (((rounding_corners & ImDrawFlags_RoundCornersLeft) == ImDrawFlags_RoundCornersLeft) || ((rounding_corners & ImDrawFlags_RoundCornersRight) == ImDrawFlags_RoundCornersRight) ? 0.5f : 1.0f) - 1.0f);
+
+    if (rounding <= 0.0f || rounding_corners == 0)
+        return;
+    else
+    {
+        const float rounding_tl = (rounding_corners & ImDrawFlags_RoundCornersTopLeft) ? rounding : 0.0f;
+        const float rounding_tr = (rounding_corners & ImDrawFlags_RoundCornersTopRight) ? rounding : 0.0f;
+        const float rounding_br = (rounding_corners & ImDrawFlags_RoundCornersBottomRight) ? rounding : 0.0f;
+        const float rounding_bl = (rounding_corners & ImDrawFlags_RoundCornersBottomLeft) ? rounding : 0.0f;
+
+        const ImVec2 uv = _Data->TexUvWhitePixel;
+        PrimReserve(6, 4);
+        PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx)); PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx + 1)); PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx + 2));
+        PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx)); PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx + 2)); PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx + 3));
+        PrimWriteVtx(p_min, uv, col_upr_left);
+        PrimWriteVtx(ImVec2(p_max.x, p_min.y), uv, col_upr_right);
+        PrimWriteVtx(p_max, uv, col_bot_right);
+        PrimWriteVtx(ImVec2(p_min.x, p_max.y), uv, col_bot_left);
+
+        PathLineTo(p_min);
+        PathArcTo(ImVec2(p_min.x + rounding_tl, p_min.y + rounding_tl), rounding_tl, 4.820f, 3.100f);
+        PathFillConvex(bg_color);
+
+        PathLineTo(ImVec2(p_max.x, p_min.y));
+        PathArcTo(ImVec2(p_max.x - rounding_tr, p_min.y + rounding_tr), rounding_tr, 6.3400f, 4.620f);
+        PathFillConvex(bg_color);
+
+        PathLineTo(ImVec2(p_max.x, p_max.y));
+        PathArcTo(ImVec2(p_max.x - rounding_br, p_max.y - rounding_br), rounding_br, 7.960f, 6.240f);
+        PathFillConvex(bg_color);
+
+        PathLineTo(ImVec2(p_min.x, p_max.y));
+        PathArcTo(ImVec2(p_min.x + rounding_bl, p_max.y - rounding_bl), rounding_bl, 9.5f, 7.770f);
+        PathFillConvex(bg_color);
+
+    }
+}
+
 void ImDrawList::AddQuad(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, ImU32 col, float thickness)
 {
     if ((col & IM_COL32_A_MASK) == 0)
@@ -2009,7 +2052,6 @@ ImFontConfig::ImFontConfig()
     OversampleV = 1;
     GlyphMaxAdvanceX = FLT_MAX;
     RasterizerMultiply = 1.0f;
-    RasterizerDensity = 1.0f;
     EllipsisChar = (ImWchar)-1;
 }
 
@@ -2567,7 +2609,7 @@ static bool ImFontAtlasBuildWithStbTruetype(ImFontAtlas* atlas)
 
         // Convert our ranges in the format stb_truetype wants
         ImFontConfig& cfg = atlas->ConfigData[src_i];
-        src_tmp.PackRange.font_size = cfg.SizePixels * cfg.RasterizerDensity;
+        src_tmp.PackRange.font_size = cfg.SizePixels;
         src_tmp.PackRange.first_unicode_codepoint_in_range = 0;
         src_tmp.PackRange.array_of_unicode_codepoints = src_tmp.GlyphsList.Data;
         src_tmp.PackRange.num_chars = src_tmp.GlyphsList.Size;
@@ -2576,7 +2618,7 @@ static bool ImFontAtlasBuildWithStbTruetype(ImFontAtlas* atlas)
         src_tmp.PackRange.v_oversample = (unsigned char)cfg.OversampleV;
 
         // Gather the sizes of all rectangles we will need to pack (this loop is based on stbtt_PackFontRangesGatherRects)
-        const float scale = (cfg.SizePixels > 0.0f) ? stbtt_ScaleForPixelHeight(&src_tmp.FontInfo, cfg.SizePixels * cfg.RasterizerDensity) : stbtt_ScaleForMappingEmToPixels(&src_tmp.FontInfo, -cfg.SizePixels * cfg.RasterizerDensity);
+        const float scale = (cfg.SizePixels > 0) ? stbtt_ScaleForPixelHeight(&src_tmp.FontInfo, cfg.SizePixels) : stbtt_ScaleForMappingEmToPixels(&src_tmp.FontInfo, -cfg.SizePixels);
         const int padding = atlas->TexGlyphPadding;
         for (int glyph_i = 0; glyph_i < src_tmp.GlyphsList.Size; glyph_i++)
         {
@@ -2678,8 +2720,6 @@ static bool ImFontAtlasBuildWithStbTruetype(ImFontAtlas* atlas)
         const float font_off_x = cfg.GlyphOffset.x;
         const float font_off_y = cfg.GlyphOffset.y + IM_ROUND(dst_font->Ascent);
 
-        const float inv_rasterization_scale = 1.0f / cfg.RasterizerDensity;
-
         for (int glyph_i = 0; glyph_i < src_tmp.GlyphsCount; glyph_i++)
         {
             // Register glyph
@@ -2688,11 +2728,7 @@ static bool ImFontAtlasBuildWithStbTruetype(ImFontAtlas* atlas)
             stbtt_aligned_quad q;
             float unused_x = 0.0f, unused_y = 0.0f;
             stbtt_GetPackedQuad(src_tmp.PackedChars, atlas->TexWidth, atlas->TexHeight, glyph_i, &unused_x, &unused_y, &q, 0);
-            float x0 = q.x0 * inv_rasterization_scale + font_off_x;
-            float y0 = q.y0 * inv_rasterization_scale + font_off_y;
-            float x1 = q.x1 * inv_rasterization_scale + font_off_x;
-            float y1 = q.y1 * inv_rasterization_scale + font_off_y;
-            dst_font->AddGlyph(&cfg, (ImWchar)codepoint, x0, y0, x1, y1, q.s0, q.t0, q.s1, q.t1, pc.xadvance * inv_rasterization_scale);
+            dst_font->AddGlyph(&cfg, (ImWchar)codepoint, q.x0 + font_off_x, q.y0 + font_off_y, q.x1 + font_off_x, q.y1 + font_off_y, q.s0, q.t0, q.s1, q.t1, pc.xadvance);
         }
     }
 
@@ -3892,33 +3928,39 @@ void ImFont::RenderText(ImDrawList* draw_list, float size, const ImVec2& pos, Im
 // Render an arrow aimed to be aligned with text (p_min is a position in the same space text would be positioned). To e.g. denote expanded/collapsed state
 void ImGui::RenderArrow(ImDrawList* draw_list, ImVec2 pos, ImU32 col, ImGuiDir dir, float scale)
 {
-    const float h = draw_list->_Data->FontSize * 1.00f;
-    float r = h * 0.40f * scale;
-    ImVec2 center = pos + ImVec2(h * 0.50f, h * 0.50f * scale);
+    float thickness = ImMax(scale / 20.0f, 1.2f);
+    scale -= thickness * 0.5f;
+    pos += ImVec2(thickness * 0.25f, thickness * 0.25f);
 
-    ImVec2 a, b, c;
+    float third = scale / 3.0f;
+    float bx = pos.x + third;
+    float by = pos.y + scale - third * 0.5f;
+
     switch (dir)
     {
-    case ImGuiDir_Up:
     case ImGuiDir_Down:
-        if (dir == ImGuiDir_Up) r = -r;
-        a = ImVec2(+0.000f, +0.750f) * r;
-        b = ImVec2(-0.866f, -0.750f) * r;
-        c = ImVec2(+0.866f, -0.750f) * r;
+        draw_list->PathLineTo(ImVec2(bx - third, by - third));
+        draw_list->PathLineTo(ImVec2(bx, by));
+        draw_list->PathLineTo(ImVec2(bx + third, by - third));
+        break;
+    case ImGuiDir_Up:
+        draw_list->PathLineTo(ImVec2(bx - third, by + third));
+        draw_list->PathLineTo(ImVec2(bx, by));
+        draw_list->PathLineTo(ImVec2(bx + third, by + third));
         break;
     case ImGuiDir_Left:
-    case ImGuiDir_Right:
-        if (dir == ImGuiDir_Left) r = -r;
-        a = ImVec2(+0.750f, +0.000f) * r;
-        b = ImVec2(-0.750f, +0.866f) * r;
-        c = ImVec2(-0.750f, -0.866f) * r;
+        draw_list->PathLineTo(ImVec2(bx + third, by - third));
+        draw_list->PathLineTo(ImVec2(bx, by));
+        draw_list->PathLineTo(ImVec2(bx + third, by + third));
         break;
-    case ImGuiDir_None:
-    case ImGuiDir_COUNT:
-        IM_ASSERT(0);
+    case ImGuiDir_Right:
+        draw_list->PathLineTo(ImVec2(bx - third, by - third));
+        draw_list->PathLineTo(ImVec2(bx, by));
+        draw_list->PathLineTo(ImVec2(bx - third + third / 30, by + third));
         break;
     }
-    draw_list->AddTriangleFilled(center + a, center + b, center + c, col);
+
+    draw_list->PathStroke(col, 0, thickness);
 }
 
 void ImGui::RenderBullet(ImDrawList* draw_list, ImVec2 pos, ImU32 col)
@@ -3929,7 +3971,7 @@ void ImGui::RenderBullet(ImDrawList* draw_list, ImVec2 pos, ImU32 col)
 
 void ImGui::RenderCheckMark(ImDrawList* draw_list, ImVec2 pos, ImU32 col, float sz)
 {
-    float thickness = ImMax(sz / 5.0f, 1.0f);
+    float thickness = ImMax(sz / 8.0f, 1.0f);
     sz -= thickness * 0.5f;
     pos += ImVec2(thickness * 0.25f, thickness * 0.25f);
 

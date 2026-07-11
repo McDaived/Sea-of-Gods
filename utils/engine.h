@@ -17,7 +17,9 @@
 
 void processhk(void* Object, UFunction* Function, void* Params);
 typedef void(__stdcall* fnProcessEvent)(void* Object, UFunction* Function, void* Params);
+typedef void(__thiscall* tPostRender)(UGameViewportClient* uObject, UCanvas* Canvas);
 
+void hooked_postrender(UGameViewportClient* thisptr, UCanvas* canvas);
 namespace engine
 {
 	static UAthenaGameViewportClient* AthenaGameViewportClient = nullptr;
@@ -28,6 +30,7 @@ namespace engine
 	static Config::Configuration* cfg = &Config::cfg;
 	static bool bClearSunkList = false;
 	static fnProcessEvent oProcessEvent = nullptr;
+	static tPostRender original_postrender = nullptr;
 	static ACharacter* aimTarget = nullptr;
 	static bool bInPirateGenerator = false;
 	static PirateGeneratorLineUpUI* carousel = nullptr;
@@ -36,6 +39,9 @@ namespace engine
 struct FunctionIndex {
 	static inline int32_t BoxedRpcDispatcherComponent = -1;
 };
+
+
+
 
 void render(ImDrawList* drawList);
 bool initUE4(uintptr_t world, uintptr_t objects, uintptr_t names);
@@ -60,7 +66,10 @@ FVector pickHoleToAim(AHullDamage* damage, const FVector& localLoc);
 void ClearSunkList();
 void hookProcessEvent();
 void unhookProcessEvent();
+void HookPostRender();
+void UnHookPostRender();
 void EngineShutdown();
+void SetGameInputBlocked(bool blocked);
 bool loadPirateGenerator();
 uintptr_t getPirateGenerator();
 

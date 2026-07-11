@@ -4,11 +4,28 @@
 #include "../utils/engine.h"
 #include <filesystem>
 
-constexpr tslog::level LOG_LEVEL_TARGET = tslog::level::LOG; 
+constexpr tslog::level LOG_LEVEL_TARGET = tslog::level::LOG;
 constexpr bool SHOULD_ALLOC_CONSOLE = true;
 
 #define safe_release(x) if(x) { x->Release(); x = nullptr; }
 namespace fs = std::filesystem;
+
+typedef HINSTANCE(WINAPI* f_LLA_t)(const char*);
+typedef FARPROC(WINAPI* f_GPA_t)(HMODULE, LPCSTR);
+typedef BOOL(WINAPIV* f_RAFT_t)(PRUNTIME_FUNCTION, DWORD, DWORD64);
+typedef struct _MM_SYNC_DATA {
+    f_LLA_t          pLoadLibraryA;
+    f_GPA_t          pGetProcAddress;
+    f_RAFT_t         pRtlAddFunctionTable;  
+    PBYTE            pbase;
+    HINSTANCE        hMod;
+    DWORD            fdwReasonParam;
+    LPVOID           reservedParam;
+    BOOL             SEHSupport;
+    PVOID* pHkFnLocAddress;
+    PVOID            pHkFnAddress;
+    volatile LONG    initComplete;          // set to 1 when DLL init is complete
+} MM_SYNC_DATA, * PMM_SYNC_DATA;
 
 static DWORD mSize = 0;
 static uintptr_t dxgi = NULL;
@@ -38,10 +55,9 @@ static float tPirateBodyTypeModifier = -1.f;
 static float tPirateDirtiness = -1.f;
 static float tPirateWonkiness = -1.f;
 
-
+BOOL WINAPI DllMain(HINSTANCE hModule, DWORD reason, LPVOID reserved);
 DWORD WINAPI MainThread(LPVOID lpParameter);
 bool end();
-void run();
 bool getBaseModule();
 void getModule();
 void clearDX11Objects();
@@ -58,10 +74,8 @@ HRESULT resizeBufferHook(IDXGISwapChain* swapChain, UINT bufferCount, UINT width
 typedef HRESULT(*DX11ResizeBuffer)(IDXGISwapChain* swapChain, UINT bufferCount, UINT width, UINT height, DXGI_FORMAT newFormat, UINT swapChainFlags);
 DX11ResizeBuffer oDX11ResizeBuffer = nullptr;
 
-WNDPROC oWindowProc = nullptr;
-
-LRESULT CALLBACK windowProcHookEx(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
+void UpdateImGuiCursor();
+void OnMenuVisibilityChanged(bool nowOpen);
 
 HCURSOR WINAPI hkSetCursor(HCURSOR hCursor);
 BOOL WINAPI hkSetCursorPos(int x, int y);
@@ -69,3 +83,15 @@ typedef HCURSOR(WINAPI* fnSetCursor)(HCURSOR hCursor);
 typedef BOOL(WINAPI* fnSetCursorPos)(int x, int y);
 fnSetCursor oSetCursor = nullptr;
 fnSetCursorPos oSetCursorPos = nullptr;
+
+SHORT WINAPI hkGetAsyncKeyState(int vKey);
+BOOL WINAPI hkGetKeyboardState(PBYTE lpKeyState);
+typedef SHORT(WINAPI* fnGetAsyncKeyState)(int vKey);
+typedef BOOL(WINAPI* fnGetKeyboardState)(PBYTE lpKeyState);
+fnGetAsyncKeyState oGetAsyncKeyState = nullptr;
+fnGetKeyboardState oGetKeyboardState = nullptr;
+SHORT SafeGetAsyncKeyState(int vKey);
+
+int WINAPI hkShowCursor(BOOL bShow);
+typedef int(WINAPI* fnShowCursor)(BOOL bShow);
+fnShowCursor oShowCursor = nullptr;
